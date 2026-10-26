@@ -32,3 +32,6 @@ RED: 17 codec tests failed because the codec was absent. GREEN: 39 total tests p
 
 ### Task 3: complete
 RED: 19 physical-file tests failed on absent record API. GREEN: 58 native tests passed, including compressed/uncompressed records, Adler-32, header extensions, stream ownership, truncation and bounded inflate.
+
+### Task 4: complete
+RED: six logical/registry tests failed on missing interfaces. GREEN: 64 native tests passed. Generated 137 tags and 483 identifiers with source SHA-256; context resets, required fields, index/count and sharing-cycle validation passed.
