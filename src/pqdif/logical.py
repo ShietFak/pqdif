@@ -45,8 +45,8 @@ def _fields(root: Collection, scalars: dict[UUID, P], vectors: dict[UUID, P]) ->
         if element.physical_type != kind:
             raise ValidationError(f"{t.BY_ID[tag].name} must be {kind.name}")
     for tag, kind in vectors.items():
-        element = cast(Vector, require(root, tag, Vector))
-        if element.physical_type != kind and not (kind == P.CHAR1 and element.physical_type == P.CHAR2):
+        vector = cast(Vector, require(root, tag, Vector))
+        if vector.physical_type != kind and not (kind == P.CHAR1 and vector.physical_type == P.CHAR2):
             raise ValidationError(f"{t.BY_ID[tag].name} has invalid physical type")
 
 
@@ -190,17 +190,17 @@ class LogicalFile:
                     _fields(definition, {t.VALUE_TYPE_ID: P.GUID, t.QUANTITY_UNITS_ID: P.UINT4,
                                         t.QUANTITY_CHARACTERISTIC_ID: P.GUID,
                                         t.STORAGE_METHOD_ID: P.UINT4}, {})
-        source: RecordView | None = None
+        active_source: RecordView | None = None
         for record in self.records:
             if record.type_tag == t.DATA_SOURCE:
-                source = RecordView(record)
+                active_source = RecordView(record)
             if record.type_tag == t.MONITOR_SETTINGS:
                 root = RecordView(record).body
                 _fields(root, {t.EFFECTIVE: P.TIMESTAMP, t.TIME_INSTALLED: P.TIMESTAMP,
                                t.USE_CALIBRATION: P.BOOLEAN4, t.USE_TRANSDUCER: P.BOOLEAN4}, {})
                 settings = children(root, t.CHANNEL_SETTINGS_ARRAY, t.ONE_CHANNEL_SETTING)
-                assert source is not None
-                count = len(children(source.body, t.CHANNEL_DEFINITIONS, t.ONE_CHANNEL_DEFINITION))
+                assert active_source is not None
+                count = len(children(active_source.body, t.CHANNEL_DEFINITIONS, t.ONE_CHANNEL_DEFINITION))
                 indexes = [integer(setting, t.CHANNEL_DEFINITION_INDEX) for setting in settings]
                 if any(index >= count for index in indexes) or len(set(indexes)) != len(indexes):
                     raise ValidationError("invalid/duplicate channel setting index")

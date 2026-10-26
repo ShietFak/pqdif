@@ -38,3 +38,6 @@ RED: six logical/registry tests failed on missing interfaces. GREEN: 64 native t
 
 ### Task 5: complete
 RED: 15 high-level cases failed on missing public API. GREEN: 79 native tests passed. Live tree edits preserved unknown nested raw values. Added Series in series.py to keep conversion/sharing separate from file construction. Multi-rate increments accumulate segment origins; no calibration conversion is silently guessed.
+
+### Task 6: complete
+RED: committed fixtures absent and required live oracle failed setup (2 failed, 5 errors). Built actual pinned Gemstone project with portable .NET 9.0.320 (zero warnings/errors), generated deterministic fixtures with SHA-256 provenance. GREEN: 86 tests passed with PQDIF_REQUIRE_ORACLE=1, including both implementations reading and rewriting each other's none/zlib files. Registry metadata present in install. GitHub repository created at https://github.com/ShietFak/pqdif (empty, not yet pushed).
