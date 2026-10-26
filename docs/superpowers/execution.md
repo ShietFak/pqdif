@@ -23,3 +23,6 @@ Spec: `docs/superpowers/specs/2026-10-26-pqdif-design.md`
 ## Task evidence
 
 To be appended after each observed RED/GREEN cycle.
+
+### Task 1: complete
+RED: 22 tests failed because pqdif was absent. GREEN: 22 passed (Python 3.12). Independent scalar hex expectations, raw precision and NumPy checks passed.
