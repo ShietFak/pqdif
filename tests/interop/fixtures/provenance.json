@@ -1,0 +1,10 @@
+{
+  "generator": "tests/interop/oracle/Program.cs",
+  "repository": "https://github.com/gemstone/pqdif",
+  "commit": "296d859d094347420f22415b91cfe428ff87687b",
+  "sdk": "9.0.320",
+  "files": {
+    "gemstone-none.pqd": "16dc7752dd1ab5bdce74de33039f79d8a6a9a35f3f9ccd28732621b35d7ebf0f",
+    "gemstone-zlib.pqd": "724994858f2eeb6877126f2372b110ac42969e2e81ad4f512daeaef8d55bcffa"
+  }
+}

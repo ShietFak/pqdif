@@ -22,6 +22,9 @@ an independently adequate conformance corpus. Vendor quirks are deferred.
 - Primary oracle: https://github.com/gemstone/pqdif at
   `296d859d094347420f22415b91cfe428ff87687b`.
 - Historical reference: https://github.com/GridProtectionAlliance/gsf/tree/master/Source/Libraries/GSF.PQDIF
+- IEEE native reference consulted for multi-rate semantics:
+  https://opensource.ieee.org/pqdif/pqdifnet at
+  `7cb74a0999134ad67d9e40485e4388e89db1fef1`, `pqdiflib/rec_observ.cpp`.
 
 Gemstone's README describes 2003 support; its agreement is interoperability
 evidence, not proof that every 2025 logical rule has been implemented. Derived

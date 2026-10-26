@@ -1,0 +1,11 @@
+include LICENSE NOTICE README.md CONTRIBUTING.md SECURITY.md
+recursive-include licenses *.txt
+recursive-include docs *.md
+recursive-include tests *.py *.cs *.csproj *.json *.pqd
+recursive-include tools *.py
+recursive-include examples *.py
+recursive-include .github *.yml *.md
+prune work
+prune outputs
+prune tests/interop/oracle/obj
+prune tests/interop/oracle/bin

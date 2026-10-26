@@ -1,0 +1,4190 @@
+{
+  "provenance": {
+    "repository": "https://github.com/gemstone/pqdif",
+    "commit": "296d859d094347420f22415b91cfe428ff87687b",
+    "source_sha256": "36fde38aae119e63284f3fc30aac25198b791e5d2a2283bf3200e4b1548a7493",
+    "license": "MIT",
+    "copyright": "2019-2023 Grid Protection Alliance"
+  },
+  "tags": [
+    {
+      "id": "89738618-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "BlankTag",
+      "standardName": "tagBlank",
+      "description": "Can be used to leave space in a collection. To leave a collection item blank, specify it as a scalar of less than 8 bytes (such as a UINT4), and specify it as embedded.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "89738606-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "ContainerTag",
+      "standardName": "tagContainer",
+      "description": "Record-level tag which identifies the container record (always the first one in the file, and there must be only one per file).",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "89738619-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceTag",
+      "standardName": "tagRecDataSource",
+      "description": "Record-level tag which identifies a data source (an instrument, etc.).",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "b48d858c-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "MonitorSettingsTag",
+      "standardName": "tagRecMonitorSettings",
+      "description": "Record-level tag which identifies a set of configuration parameters.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "False"
+    },
+    {
+      "id": "8973861a-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "ObservationTag",
+      "standardName": "tagRecObservation",
+      "description": "Record-level tag which identifies an observation -- an event, measurement, etc.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "89738607-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "VersionInfoTag",
+      "standardName": "tagVersionInfo",
+      "description": "Specifies the format version for read/write compatibility. The four required numbers in the vector are described below.",
+      "elementType": "Vector",
+      "physicalType": "UnsignedInteger4",
+      "required": "True"
+    },
+    {
+      "id": "89738608-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "FileNameTag",
+      "standardName": "tagFileName",
+      "description": "Original name of the file.",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "True"
+    },
+    {
+      "id": "89738609-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "CreationTag",
+      "standardName": "tagCreation",
+      "description": "Date/time when the file was created.",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "True"
+    },
+    {
+      "id": "8973860a-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "LastSavedTag",
+      "standardName": "tagLastSaved",
+      "description": "Date/time when the file was last saved.",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "False"
+    },
+    {
+      "id": "8973860b-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "TimesSavedTag",
+      "standardName": "tagTimesSaved",
+      "description": "The number of times the file has been saved/modified.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "8973860c-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "LanguageTag",
+      "standardName": "tagLanguage",
+      "description": "The language (English, etc.) of the file.",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "8973860d-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "TitleTag",
+      "standardName": "tagTitle",
+      "description": "Arbitrary title.",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "8973860e-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "SubjectTag",
+      "standardName": "tagSubject",
+      "description": "Arbitrary subject string",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "8973860f-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "AuthorTag",
+      "standardName": "tagAuthor",
+      "description": "Individual/company who caused the file to be written",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738610-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "KeywordsTag",
+      "standardName": "tagKeywords",
+      "description": "Keywords for assisting searches",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738611-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "CommentsTag",
+      "standardName": "tagComments",
+      "description": "Arbitrary comments",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738612-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "LastSavedByTag",
+      "standardName": "tagLastSavedBy",
+      "description": "Individual/company who last wrote to file",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738623-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "ApplicationTag",
+      "standardName": "tagApplication",
+      "description": "Creating application",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738613-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "SecurityTag",
+      "standardName": "tagSecurity",
+      "description": "Security descriptor information",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738614-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "OwnerTag",
+      "standardName": "tagOwner",
+      "description": "Owner of file contents (This and some of the following fields are for copyright and trademark information)",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738615-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "CopyrightTag",
+      "standardName": "tagCopyright",
+      "description": "Copyright notice",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738616-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "TrademarksTag",
+      "standardName": "tagTrademarks",
+      "description": "Trademark notice",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "89738617-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "NotesTag",
+      "standardName": "tagNotes",
+      "description": "RTF formatted notes associated with this file (This corresponds to the IEEE COMTRADE .HDR file, for example).",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "8973861b-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "CompressionStyleTag",
+      "standardName": "tagCompressionStyleID",
+      "description": "Specified how the compression is applied to the file.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "8973861c-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "CompressionAlgorithmTag",
+      "standardName": "tagCompressionAlgorithmID",
+      "description": "Required if tagCompressionStyleID specifies that compression is turned on.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "8973861d-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "CompressionChecksumTag",
+      "standardName": "tagCompressionChecksum",
+      "description": "If compression style is _TOTALFILE, this is the checksum for the entire file. This feature has been deprecated under 1.5.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a2-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "NameTag",
+      "standardName": "tagName",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a3-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "Address1Tag",
+      "standardName": "tagAddress1",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a4-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "Address2Tag",
+      "standardName": "tagAddress2",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a5-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "CityTag",
+      "standardName": "tagCity",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a6-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "StateTag",
+      "standardName": "tagState",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a7-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "PostalCodeTag",
+      "standardName": "tagPostalCode",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a8-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "CountryTag",
+      "standardName": "tagCountry",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a9-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "PhoneNumberTag",
+      "standardName": "tagPhoneVoice",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "3d786f80-f76e-11cf-9d89-0080c72e70a3",
+      "name": "FaxNumberTag",
+      "standardName": "tagPhoneFAX",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "3d786f81-f76e-11cf-9d89-0080c72e70a3",
+      "name": "EmailTag",
+      "standardName": "tagEMail",
+      "description": "General contact information (all optional)",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d8581-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceTypeTag",
+      "standardName": "tagDataSourceTypeID",
+      "description": "Since this ID is a Guid, you can generate a custom ID if a standard ID is not defined.",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "True"
+    },
+    {
+      "id": "b48d8582-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "VendorIDTag",
+      "standardName": "tagVendorID",
+      "description": "Since this ID is a Guid, you can generate a custom ID if a standard ID is not defined.",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "False"
+    },
+    {
+      "id": "b48d8583-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "EquipmentIDTag",
+      "standardName": "tagEquipmentID",
+      "description": "Since this ID is a Guid, you can generate a custom ID if a standard ID is not defined.",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "False"
+    },
+    {
+      "id": "b48d8584-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "CustomSourceInfoTag",
+      "standardName": "tagCustomSourceInfo",
+      "description": "This collection can include the standard name, address & telephone number tags -- these apply to the vendor -- as well as tags about the instrument itself.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "False"
+    },
+    {
+      "id": "b48d8585-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "SerialNumberTag",
+      "standardName": "tagSerialNumberDS",
+      "description": "Arbitrary string to hold data souce (instrument) serial number",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8586-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceVersionTag",
+      "standardName": "tagVersionDS",
+      "description": "Arbitrary string to hold data souce (instrument) version number (if applicable)",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8587-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceNameTag",
+      "standardName": "tagNameDS",
+      "description": "Arbitrary string to hold the name of the data souce (instrument)",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "True"
+    },
+    {
+      "id": "b48d8588-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceOwnerTag",
+      "standardName": "tagOwnerDS",
+      "description": "Arbitrary string to hold data souce (instrument) owner name",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8589-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceLocationTag",
+      "standardName": "tagLocationDS",
+      "description": "Arbitrary string to hold data souce (instrument) location information",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d858a-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceTimeZoneTag",
+      "standardName": "tagTimeZoneDS",
+      "description": "EST, CST, etc.",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d858b-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DataSourceCoordinatesTag",
+      "standardName": "tagCoordinatesDS",
+      "description": "Longitude/latitude",
+      "elementType": "Vector",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d858d-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "ChannelDefinitionsTag",
+      "standardName": "tagChannelDefns",
+      "description": "The tagChannelDefns collection must be a collection where the count = the number of channel definitions. Each entry must be another collection, each having the tagOneChannelDefn tag.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "3d786f82-f76e-11cf-9d89-0080c72e70a3",
+      "name": "InstrumentTypeIDTag",
+      "standardName": "tagInstrumentTypeID",
+      "description": "",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "False"
+    },
+    {
+      "id": "3d786f83-f76e-11cf-9d89-0080c72e70a3",
+      "name": "InstrumentModelNameTag",
+      "standardName": "tagInstrumentModelName",
+      "description": "Arbitrary string",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "3d786f84-f76e-11cf-9d89-0080c72e70a3",
+      "name": "InstrumentModelNumberTag",
+      "standardName": "tagInstrumentModelNumber",
+      "description": "Arbitrary string",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d858e-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "OneChannelDefinitionTag",
+      "standardName": "tagOneChannelDefn",
+      "description": "Must have one or more channel definitions",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "b48d8590-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "ChannelNameTag",
+      "standardName": "tagChannelName",
+      "description": "Arbitrary string",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8591-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "PhaseIDTag",
+      "standardName": "tagPhaseID",
+      "description": "Phase identifier",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "True"
+    },
+    {
+      "id": "b48d8593-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "OtherChannelIdentifierTag",
+      "standardName": "tagOtherChannelIdentifier",
+      "description": "Arbitrary string",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8594-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "GroupNameTag",
+      "standardName": "tagGroupName",
+      "description": "This tag can be repeated if there are multiple groupings. The first one should be the highest-level group (example: a bus), and the next one should be a lower group (example: a feeder).",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8592-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "QuantityTypeIDTag",
+      "standardName": "tagQuantityTypeID",
+      "description": "The high-level description of the type of quantity which is being captured by this channel. In order to guarantee reader compatibility, the following series value types (in order) should be used (ID_SERIES_VALUE_TYPE_VAL, etc.).",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "True"
+    },
+    {
+      "id": "c690e872-f755-11cf-9d89-0080c72e70a3",
+      "name": "QuantityMeasuredIDTag",
+      "standardName": "tagQuantityMeasuredID",
+      "description": "Identifies the physical quantity under measurement -- Voltage, Current, Power, etc. In general, there is a one-to-one correspondence between this and the units of the series, but not always.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "True"
+    },
+    {
+      "id": "89738622-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "PhysicalChannelTag",
+      "standardName": "tagPhysicalChannel",
+      "description": "The instrument physical channel that this channel definition is associated with.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d8595-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "QuantityNameTag",
+      "standardName": "tagQuantityName",
+      "description": "Additional quantity information.",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d8596-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "PrimarySeriesIndexTag",
+      "standardName": "tagPrimarySeriesIdx",
+      "description": "Identifies the series which will be the primary. Index into the tagSeriesDefns collection.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d8598-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "SeriesDefinitionsTag",
+      "standardName": "tagSeriesDefns",
+      "description": "The tagSeriesDefns collection must be a collection where the count = the number of series definitions. Each entry must be another collection, each having the tagOneSeriesDefn tag.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "b48d859a-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "OneSeriesDefinitionTag",
+      "standardName": "tagOneSeriesDefn",
+      "description": "One of these collections per series.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "b48d859c-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "ValueTypeIDTag",
+      "standardName": "tagValueTypeID",
+      "description": "This specifies the meaning of the series data.",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "True"
+    },
+    {
+      "id": "b48d859b-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "QuantityUnitsIDTag",
+      "standardName": "tagQuantityUnitsID",
+      "description": "This specifies the units of the data in this series. The expected physical type for the tagSeriesValues vector is REAL4 or Real8 (except as noted).",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "True"
+    },
+    {
+      "id": "3d786f9e-f76e-11cf-9d89-0080c72e70a3",
+      "name": "QuantityCharacteristicIDTag",
+      "standardName": "tagQuantityCharacteristicID",
+      "description": "This specifies additional detail about the meaning of the series data.",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "True"
+    },
+    {
+      "id": "a112f421-b111-11d2-9b37-0040052c2d28",
+      "name": "QuantitySignificantDigitsIDTag",
+      "standardName": "tagQuantitySignificantDigitsID",
+      "description": "Defines the number of significant digits in the data represented by this series.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "fb228ee0-fc8d-11d2-b49a-006008b37183",
+      "name": "QuantityResolutionIDTag",
+      "standardName": "tagQuantityResolutionID",
+      "description": "Contains a double indicating the scaled distance between two values of the quantity represented by this series (e.g. scaled A/D resolution)",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a1-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "StorageMethodIDTag",
+      "standardName": "tagStorageMethodID",
+      "description": "The legal values for this entry are masks, since they are OR-able.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "True",
+      "formatString": "0x{0:X2}"
+    },
+    {
+      "id": "b48d859d-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "ValueTypeNameTag",
+      "standardName": "tagValueTypeName",
+      "description": "Arbitrary string",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "b48d859e-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "HintGreekPrefixIDTag",
+      "standardName": "tagHintGreekPrefixID",
+      "description": "",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d859f-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "HintPreferredUnitsIDTag",
+      "standardName": "tagHintPreferredUnitsID",
+      "description": "",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d85a0-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "HintDefaultDisplayIDTag",
+      "standardName": "tagHintDefaultDisplayID",
+      "description": "",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "2747d441-2bd0-11d2-ae42-0060083a2628",
+      "name": "ProbabilityIntervalTag",
+      "standardName": "tagProbInterval",
+      "description": "For a probability series definition, this specifies its time interval (in seconds; >0).",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "2747d440-2bd0-11d2-ae42-0060083a2628",
+      "name": "ProbabilityPercentileTag",
+      "standardName": "tagProbPercentile",
+      "description": "For a probability series definition, this specifies its probability percentile (in percent; 0-100).",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c8-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "SeriesNominalQuantityTag",
+      "standardName": "tagSeriesNominalQuantity",
+      "description": "Contains the default nominal base voltage or any or any other necessary normalizing quantity. Display programs may use this value or the tagSeriesBaseQuantity in the series instance for displaying data in percent or per unit.",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28183-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "EffectiveTag",
+      "standardName": "tagEffective",
+      "description": "The time that these settings become effective.",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "True"
+    },
+    {
+      "id": "3d786f85-f76e-11cf-9d89-0080c72e70a3",
+      "name": "TimeInstalledTag",
+      "standardName": "tagTimeInstalled",
+      "description": "",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "True"
+    },
+    {
+      "id": "3d786f86-f76e-11cf-9d89-0080c72e70a3",
+      "name": "TimeRemovedTag",
+      "standardName": "tagTimeRemoved",
+      "description": "",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "False"
+    },
+    {
+      "id": "62f28180-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "UseCalibrationTag",
+      "standardName": "tagUseCalibration",
+      "description": "If TRUE, the calibration adjustments *must* be applied to the series data before using. Otherwise the data is for informative use only.",
+      "elementType": "Scalar",
+      "physicalType": "Boolean4",
+      "required": "True"
+    },
+    {
+      "id": "62f28181-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "UseTransducerTag",
+      "standardName": "tagUseTransducer",
+      "description": "If TRUE, the transducer adjustments *must* be applied to the series data before using. Otherwise the data is for informative use only.",
+      "elementType": "Scalar",
+      "physicalType": "Boolean4",
+      "required": "True"
+    },
+    {
+      "id": "62f28182-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "ChannelSettingsArrayTag",
+      "standardName": "tagChannelSettingsArray",
+      "description": "Channel specific monitor settings stuff",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "0fa118c3-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "NominalFrequencyTag",
+      "standardName": "tagNominalFrequency",
+      "description": "Nominal power system frequency for this instrument in Hertz",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "9f256ee0-803b-11d3-b92f-0050da2b1f4d",
+      "name": "SettingPhysicalConnectionTag",
+      "standardName": "tagSettingPhysicalConnection",
+      "description": "Identifies the physical connection of the instrumentation or insturment transducers.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "3d786f9a-f76e-11cf-9d89-0080c72e70a3",
+      "name": "OneChannelSettingTag",
+      "standardName": "tagOneChannelSetting",
+      "description": "One of these collections per channel.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "b48d858f-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "ChannelDefinitionIndexTag",
+      "standardName": "tagChannelDefnIdx",
+      "description": "The channel definition which these settings apply to. Index into tagChannelDefns collection of the matching data source record.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "True"
+    },
+    {
+      "id": "62f28184-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "TriggerTypeIDTag",
+      "standardName": "tagTriggerTypeID",
+      "description": "Integer ID representing which trigger fields are used.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False",
+      "formatString": "0x{0:X2}"
+    },
+    {
+      "id": "3d786f87-f76e-11cf-9d89-0080c72e70a3",
+      "name": "FullScaleTag",
+      "standardName": "tagFullScale",
+      "description": "Full scale range for this instrument channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "3d786f89-f76e-11cf-9d89-0080c72e70a3",
+      "name": "NoiseFloorTag",
+      "standardName": "tagNoiseFloor",
+      "description": "Noise floor for this instrument channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28188-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "TriggerShapeParametersTag",
+      "standardName": "tagTriggerShapeParam",
+      "description": "Parameters for shape based triggering algorithms for this channel",
+      "elementType": "Vector",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28189-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "XDTransformerTypeIDTag",
+      "standardName": "tagXDTransformerTypeID",
+      "description": "PT or CT",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "62f2818a-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "XDSystemSideRatioTag",
+      "standardName": "tagXDSystemSideRatio",
+      "description": "System side part of ratio",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f2818b-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "XDMonitorSideRatioTag",
+      "standardName": "tagXDMonitorSideRatio",
+      "description": "Monitor side part of ratio",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f2818c-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "XDFrequencyResponseTag",
+      "standardName": "tagXDFrequencyResponse",
+      "description": "Transducer frequency response",
+      "elementType": "Vector",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f2818d-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "CalTimeSkewTag",
+      "standardName": "tagCalTimeSkew",
+      "description": "Chanel time skew",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f2818e-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "CalOffsetTag",
+      "standardName": "tagCalOffset",
+      "description": "Channel DC offset error",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f2818f-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "CalRatioTag",
+      "standardName": "tagCalRatio",
+      "description": "Channel ratio error",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28190-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "CalMustUseARCalTag",
+      "standardName": "tagCalMustUseARCal",
+      "description": "Flag indicating that the applied/recordedt calibration arrays must be used to correct data.",
+      "elementType": "Scalar",
+      "physicalType": "Boolean4",
+      "required": "False"
+    },
+    {
+      "id": "62f28191-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "CalAppliedTag",
+      "standardName": "tagCalApplied",
+      "description": "Array of applied signals for this channel",
+      "elementType": "Vector",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28192-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "CalRecordedTag",
+      "standardName": "tagCalRecorded",
+      "description": "Array of recorded actual values for the applied signal",
+      "elementType": "Vector",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "5b12f431-ff54-11d3-b968-0050da2b1f4d",
+      "name": "TriggerHighHighTag",
+      "standardName": "tagTriggerHighHigh",
+      "description": "High High trigger for this channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28186-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "TriggerHighTag",
+      "standardName": "tagTriggerHigh",
+      "description": "High trigger for this channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28185-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "TriggerLowTag",
+      "standardName": "tagTriggerLow",
+      "description": "Low trigger for this channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "5b12f430-ff54-11d3-b968-0050da2b1f4d",
+      "name": "TriggerLowLowTag",
+      "standardName": "tagTriggerLowLow",
+      "description": "Low Low trigger for this channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "5b12f432-ff54-11d3-b968-0050da2b1f4d",
+      "name": "TriggerDeadbandTag",
+      "standardName": "tagTriggerDeadBand",
+      "description": "Deadband trigger for this channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "62f28187-f9c4-11cf-9d89-0080c72e70a3",
+      "name": "TriggerRateTag",
+      "standardName": "tagTriggerRate",
+      "description": "Rate of change trigger for this channel",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "3d786f8a-f76e-11cf-9d89-0080c72e70a3",
+      "name": "ObservationNameTag",
+      "standardName": "tagObservationName",
+      "description": "Name of the observation",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "True"
+    },
+    {
+      "id": "3d786f8b-f76e-11cf-9d89-0080c72e70a3",
+      "name": "TimeCreateTag",
+      "standardName": "tagTimeCreate",
+      "description": "Time this observation was created",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "True"
+    },
+    {
+      "id": "3d786f8c-f76e-11cf-9d89-0080c72e70a3",
+      "name": "TimeStartTag",
+      "standardName": "tagTimeStart",
+      "description": "The start time of the observation -- the zero point where the .",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "True"
+    },
+    {
+      "id": "3d786f8d-f76e-11cf-9d89-0080c72e70a3",
+      "name": "TriggerMethodTag",
+      "standardName": "tagTriggerMethodID",
+      "description": "Type of trigger which caused the observation.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "True"
+    },
+    {
+      "id": "3d786f8e-f76e-11cf-9d89-0080c72e70a3",
+      "name": "TimeTriggeredTag",
+      "standardName": "tagTimeTriggered",
+      "description": "Tme this observation was triggered if appropriate",
+      "elementType": "Scalar",
+      "physicalType": "Timestamp",
+      "required": "False"
+    },
+    {
+      "id": "3d786f8f-f76e-11cf-9d89-0080c72e70a3",
+      "name": "ChannelTriggerIndexTag",
+      "standardName": "tagChannelTriggerIdx",
+      "description": "Index into tagChannelInstances collection within this record. This specifies which channel(s) initiated the observation.",
+      "elementType": "Vector",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "3d786f90-f76e-11cf-9d89-0080c72e70a3",
+      "name": "ObservationSerialTag",
+      "standardName": "tagObservationSerial",
+      "description": "The serial number of the observation (if generated by an instrument, for example).",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "89738621-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "ObservationAggregationSerialTag",
+      "standardName": "tagObservationAggregationSerial",
+      "description": "Serial number -- of specific cycle, for example -- that can be used to correlate observations.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "b48d8597-f5f5-11cf-9d89-0080c72e70a3",
+      "name": "DisturbanceCategoryIDTag",
+      "standardName": "tagDisturbanceCategoryID",
+      "description": "Currently uses the IEEE 1159 disturbance categories, but others could be used as well.",
+      "elementType": "Scalar",
+      "physicalType": "Guid",
+      "required": "False"
+    },
+    {
+      "id": "3d786f91-f76e-11cf-9d89-0080c72e70a3",
+      "name": "ChannelInstancesTag",
+      "standardName": "tagChannelInstances",
+      "description": "This collection contains a set of channel instances. It is not required to contain the same number of channels as there are channel instances. This can be determined on an observation-by-observation basis.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "0fa118c0-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "CharacterizationDisturbanceDirectionTag",
+      "standardName": "tagCharactDisturbDirection",
+      "description": "Direction of disturbance represented by the data in this observation. Value of 0 means don't know, 1 means originated from load side, 2 means originated from source side.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c1-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "CharacterizationDisturbanceDirectionQualityTag",
+      "standardName": "tagCharactDisturbDirectionQuality",
+      "description": "Quality of the direction result given in another tag. Range is from 0 (no confidence), to 100 (darn sure).",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "3d786f92-f76e-11cf-9d89-0080c72e70a3",
+      "name": "OneChannelInstanceTag",
+      "standardName": "tagOneChannelInst",
+      "description": "One of these collections per channel instance.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "2747d444-2bd0-11d2-ae42-0060083a2628",
+      "name": "CharacterizationDurationTag",
+      "standardName": "tagCharactDuration",
+      "description": "Simple characterization value: duration of disturbance (seconds)",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "3d786f93-f76e-11cf-9d89-0080c72e70a3",
+      "name": "SeriesInstancesTag",
+      "standardName": "tagSeriesInstances",
+      "description": "This collection must contain the exact number of series which were defined for the specified channel definition.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "2747d443-2bd0-11d2-ae42-0060083a2628",
+      "name": "CharacterizationMagnitudeTag",
+      "standardName": "tagCharactMagnitude",
+      "description": "Simple characterization value: magnitude of disturbance (percent: 100%=nominal)",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "2747d445-2bd0-11d2-ae42-0060083a2628",
+      "name": "CharacterizationFrequencyTag",
+      "standardName": "tagCharactFrequency",
+      "description": "Simple characterization value: frequency (Hertz)",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c7-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "ChannelTriggerModuleInfoTag",
+      "standardName": "tagChanTriggerModuleInfo",
+      "description": "Contains a 32 bit integer that represents module spefic information related to the trigger reason.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c6-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "ChannelTriggerModuleNameTag",
+      "standardName": "tagChanTriggerModuleName",
+      "description": "Contains the name of a device specific code or hardware module, algorithm or rule not necessarily channel based that caused this channel to be recorded",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c5-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "CrossTriggerDeviceNameTag",
+      "standardName": "tagCrossTriggerDeviceName",
+      "description": "Contains the name of the device involved in an external cross trigger scenario.",
+      "elementType": "Vector",
+      "physicalType": "Char1",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c4-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "CrossTriggerChannelIndexTag",
+      "standardName": "tagCrossTriggerChanIdx",
+      "description": "Contains the channel definition index of the channel that triggered in a cross trigger scenrio.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "0fa118c2-cb4a-11d2-b30b-fe25cb9a1760",
+      "name": "ChannelTriggerTypeIDTag",
+      "standardName": "tagChanTriggerTypeID",
+      "description": "Integer ID representing the trigger type for this channel instance. Used only with type ID_QT_VALUELOG wit a trigger method of channel.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "2747d442-2bd0-11d2-ae42-0060083a2628",
+      "name": "ChannelFrequencyTag",
+      "standardName": "tagChannelFrequency",
+      "description": "For a channel which contains multiple instances to represent a sparse log of time-stamped frequency-domain information, this specifies the frequency for which this channel instance applies (in Hertz). If not present, the channel characteristics are frequency independent unless further specified by the quantity characteristic.",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "f90de218-e67b-4cf1-a295-b021a2d46767",
+      "name": "ChannelGroupIDTag",
+      "standardName": "tagChannelGroupID",
+      "description": "For a channel which contains multiple instances to represent a sparse log of time-stamped frequency-domain information, this specifies the frequency for which this channel instance applies (in Index). The index referes to a harmonic or interharmonic group index.",
+      "elementType": "Scalar",
+      "physicalType": "Integer2",
+      "required": "False"
+    },
+    {
+      "id": "3d786f94-f76e-11cf-9d89-0080c72e70a3",
+      "name": "OneSeriesInstanceTag",
+      "standardName": "tagOneSeriesInstance",
+      "description": "One of these collections per series instance.",
+      "elementType": "Collection",
+      "physicalType": "0",
+      "required": "True"
+    },
+    {
+      "id": "3d786f95-f76e-11cf-9d89-0080c72e70a3",
+      "name": "SeriesBaseQuantityTag",
+      "standardName": "tagSeriesBaseQuantity",
+      "description": "Contains the nominal base voltage, or any other necessary normalizing quantity.",
+      "elementType": "Scalar",
+      "physicalType": "Real8",
+      "required": "False"
+    },
+    {
+      "id": "3d786f96-f76e-11cf-9d89-0080c72e70a3",
+      "name": "SeriesScaleTag",
+      "standardName": "tagSeriesScale",
+      "description": "If not present, assumed to be 1. The physical type should match that of tagSeriesValues.",
+      "elementType": "Scalar",
+      "physicalType": "0",
+      "required": "False"
+    },
+    {
+      "id": "3d786f97-f76e-11cf-9d89-0080c72e70a3",
+      "name": "SeriesOffsetTag",
+      "standardName": "tagSeriesOffset",
+      "description": "If not present, assumed to be 0. Generally used as a starting point when the ID_SERIES_METHOD_INCREMENT storage method is used. The physical type should match that of tagSeriesValues.",
+      "elementType": "Scalar",
+      "physicalType": "0",
+      "required": "False"
+    },
+    {
+      "id": "8973861f-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "SeriesShareChannelIndexTag",
+      "standardName": "tagSeriesShareChannelIdx",
+      "description": "Identifies the channel which owns the series to be shared. An index into the tagChannelInstances collection.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "89738620-f1c3-11cf-9d89-0080c72e70a3",
+      "name": "SeriesShareSeriesIndexTag",
+      "standardName": "tagSeriesShareSeriesIdx",
+      "description": "Identifies the series to be shared. An index into the tagSeriesInstances collection. The tagSeriesValues vector from this series is used. This must be present if tagSeriesShareChannelIdx is used.",
+      "elementType": "Scalar",
+      "physicalType": "UnsignedInteger4",
+      "required": "False"
+    },
+    {
+      "id": "3d786f99-f76e-11cf-9d89-0080c72e70a3",
+      "name": "SeriesValuesTag",
+      "standardName": "tagSeriesValues",
+      "description": "Contains the actual data points of the series. Required unless the data series is shared, in which case both tagSeriesShareChannelIdx and tagSeriesShareSeriesIdx should be present.",
+      "elementType": "Vector",
+      "physicalType": "0",
+      "required": "True"
+    }
+  ],
+  "identifiers": {
+    "tagCompressionStyleID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_COMP_STYLE_NONE",
+        "value": "0",
+        "description": "No compression is used."
+      },
+      "RecordLevel": {
+        "name": "RecordLevel",
+        "standardName": "ID_COMP_STYLE_RECORDLEVEL",
+        "value": "2",
+        "description": "The body of each record is compressed individually. The checksums will be found in the header of each record."
+      },
+      "TotalFile": {
+        "name": "TotalFile",
+        "standardName": "ID_COMP_STYLE_TOTALFILE",
+        "value": "1",
+        "description": "Everything after the container record is compressed as a single block. This feature has been deprecated under 1.5 and should not be used."
+      }
+    },
+    "tagCompressionAlgorithmID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_COMP_ALG_NONE",
+        "value": "0",
+        "description": "No compression algorithm is used."
+      },
+      "Zlib": {
+        "name": "Zlib",
+        "standardName": "ID_COMP_ALG_ZLIB",
+        "value": "1",
+        "description": "A standard compression algorithm -- ZLIB -- standardized by the IETF (Internet Engineering Task Force). See http://quest.jpl.nasa.gov/zlib/ for details."
+      },
+      "PKZIP": {
+        "name": "PKZIP",
+        "standardName": "ID_COMP_ALG_PKZIPCL",
+        "value": "64",
+        "description": "A commercial package, the PKZIP data compression library, was used to compress the data. This feature has been deprecated under 1.5 and should not be used."
+      }
+    },
+    "tagDataSourceTypeID": {
+      "ID_DS_TYPE_MEASURE": {
+        "name": "ID_DS_TYPE_MEASURE",
+        "standardName": "ID_DS_TYPE_MEASURE",
+        "value": "e6b51730-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_DS_TYPE_MEASURE"
+      },
+      "ID_DS_TYPE_MANUAL": {
+        "name": "ID_DS_TYPE_MANUAL",
+        "standardName": "ID_DS_TYPE_MANUAL",
+        "value": "e6b51731-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_DS_TYPE_MANUAL"
+      },
+      "ID_DS_TYPE_SIMULATE": {
+        "name": "ID_DS_TYPE_SIMULATE",
+        "standardName": "ID_DS_TYPE_SIMULATE",
+        "value": "e6b51732-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_DS_TYPE_SIMULATE"
+      },
+      "ID_DS_TYPE_BENCHMARK": {
+        "name": "ID_DS_TYPE_BENCHMARK",
+        "standardName": "ID_DS_TYPE_BENCHMARK",
+        "value": "e6b51733-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_DS_TYPE_BENCHMARK"
+      },
+      "ID_DS_TYPE_DEBUG": {
+        "name": "ID_DS_TYPE_DEBUG",
+        "standardName": "ID_DS_TYPE_DEBUG",
+        "value": "e6b51734-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_DS_TYPE_DEBUG"
+      }
+    },
+    "tagVendorID": {
+      "SATEC": {
+        "name": "SATEC",
+        "standardName": "ID_VENDOR_SATEC",
+        "value": "e2da5081-7fdb-11d3-9b39-0040052c2d28",
+        "description": "SATEC"
+      },
+      "None": {
+        "name": "None",
+        "standardName": "ID_VENDOR_NONE",
+        "value": "e6b51701-f747-11cf-9d89-0080c72e70a3",
+        "description": "None"
+      },
+      "ID_VENDOR_BPA": {
+        "name": "ID_VENDOR_BPA",
+        "standardName": "ID_VENDOR_BPA",
+        "value": "e6b51703-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_VENDOR_BPA"
+      },
+      "Cooper": {
+        "name": "Cooper",
+        "standardName": "ID_VENDOR_COOPER",
+        "value": "e6b51705-f747-11cf-9d89-0080c72e70a3",
+        "description": "Cooper"
+      },
+      "Dranetz": {
+        "name": "Dranetz",
+        "standardName": "ID_VENDOR_DRANETZ",
+        "value": "e6b51707-f747-11cf-9d89-0080c72e70a3",
+        "description": "Dranetz"
+      },
+      "EPRI": {
+        "name": "EPRI",
+        "standardName": "ID_VENDOR_EPRI",
+        "value": "e6b51709-f747-11cf-9d89-0080c72e70a3",
+        "description": "EPRI"
+      },
+      "Fluke": {
+        "name": "Fluke",
+        "standardName": "ID_VENDOR_FLUKE",
+        "value": "e6b5170b-f747-11cf-9d89-0080c72e70a3",
+        "description": "Fluke"
+      },
+      "IEEE": {
+        "name": "IEEE",
+        "standardName": "ID_VENDOR_IEEE",
+        "value": "e6b5170d-f747-11cf-9d89-0080c72e70a3",
+        "description": "IEEE"
+      },
+      "Metrosonic": {
+        "name": "Metrosonic",
+        "standardName": "ID_VENDOR_METROSONIC",
+        "value": "e6b5170f-f747-11cf-9d89-0080c72e70a3",
+        "description": "Metrosonic"
+      },
+      "PSI": {
+        "name": "PSI",
+        "standardName": "ID_VENDOR_PSI",
+        "value": "e6b51711-f747-11cf-9d89-0080c72e70a3",
+        "description": "PSI"
+      },
+      "Public Domain": {
+        "name": "Public Domain",
+        "standardName": "ID_VENDOR_PUBLICDOMAIN",
+        "value": "e6b51713-f747-11cf-9d89-0080c72e70a3",
+        "description": "Public Domain"
+      },
+      "Square D PowerLogic": {
+        "name": "Square D PowerLogic",
+        "standardName": "ID_VENDOR_SQUAREDPOWERLOGIC",
+        "value": "e6b51715-f747-11cf-9d89-0080c72e70a3",
+        "description": "Square D PowerLogic"
+      },
+      "PMI": {
+        "name": "PMI",
+        "standardName": "ID_VENDOR_PMI",
+        "value": "609acec0-993d-11d4-a4b3-444553540000",
+        "description": "PMI"
+      },
+      "Met One": {
+        "name": "Met One",
+        "standardName": "ID_VENDOR_METONE",
+        "value": "b5b5da61-e2e1-11d4-82d9-00e09872a094",
+        "description": "Met One"
+      },
+      "Trinergi": {
+        "name": "Trinergi",
+        "standardName": "ID_VENDOR_TRINERGI",
+        "value": "0fd5a3a8-d73a-11d2-ac3e-444553540000",
+        "description": "Trinergi"
+      },
+      "GE": {
+        "name": "GE",
+        "standardName": "ID_VENDOR_GE",
+        "value": "5202bd00-245c-11d5-a4b3-444553540000",
+        "description": "General Electric US"
+      },
+      "LEM": {
+        "name": "LEM",
+        "standardName": "ID_VENDOR_LEM",
+        "value": "80c4a722-2816-11d4-8ab4-004005698d26",
+        "description": "LEM"
+      },
+      "ACTL": {
+        "name": "ACTL",
+        "standardName": "ID_VENDOR_ACTL",
+        "value": "80c4a761-2816-11d4-8ab4-004005698d26",
+        "description": "ACTL"
+      },
+      "AdvanTech": {
+        "name": "AdvanTech",
+        "standardName": "ID_VENDOR_ADVANTECH",
+        "value": "650f988f-378c-47b8-baed-cccb3f959ad7",
+        "description": "Advantech"
+      },
+      "ELCOM": {
+        "name": "ELCOM",
+        "standardName": "ID_VENDOR_ELCOM",
+        "value": "f7e9eb70-6f1d-11d6-9cb3-0020e010453b",
+        "description": "Elcom"
+      }
+    },
+    "tagEquipmentID": {
+      "WPT 5530": {
+        "name": "WPT 5530",
+        "standardName": "ID_EQUIP_WPT_5530",
+        "value": "e2da5083-7fdb-11d3-9b39-0040052c2d28",
+        "description": "WPT 5530"
+      },
+      "BMI 3100": {
+        "name": "BMI 3100",
+        "standardName": "ID_EQUIP_BMI_3100",
+        "value": "f1c04780-50fb-11d3-ac3e-444553540000",
+        "description": "BMI 3100"
+      },
+      "BMI 8010": {
+        "name": "BMI 8010",
+        "standardName": "ID_EQUIP_BMI_8010",
+        "value": "e6b51718-f747-11cf-9d89-0080c72e70a3",
+        "description": "BMI 8010"
+      },
+      "BMI 9010": {
+        "name": "BMI 9010",
+        "standardName": "ID_EQUIP_BMI_9010",
+        "value": "e6b5171a-f747-11cf-9d89-0080c72e70a3",
+        "description": "BMI 9010"
+      },
+      "Cooper V-Flicker": {
+        "name": "Cooper V-Flicker",
+        "standardName": "ID_EQUIP_COOPER_VFLICKER",
+        "value": "e6b5171c-f747-11cf-9d89-0080c72e70a3",
+        "description": "Cooper V-Flicker"
+      },
+      "Dranetz 656": {
+        "name": "Dranetz 656",
+        "standardName": "ID_EQUIP_DRANETZ_656",
+        "value": "e6b5171e-f747-11cf-9d89-0080c72e70a3",
+        "description": "Dranetz 656"
+      },
+      "ETK Test Program": {
+        "name": "ETK Test Program",
+        "standardName": "ID_EQUIP_ETK_TESTPROGRAM",
+        "value": "e6b51721-f747-11cf-9d89-0080c72e70a3",
+        "description": "ETK Test Program"
+      },
+      "ETK PQDIF editor": {
+        "name": "ETK PQDIF editor",
+        "standardName": "ID_EQUIP_ETK_PQDIFEDITOR",
+        "value": "e6b51722-f747-11cf-9d89-0080c72e70a3",
+        "description": "ETK PQDIF editor"
+      },
+      "ETK Super-Harm": {
+        "name": "ETK Super-Harm",
+        "standardName": "ID_EQUIP_ETK_SUPERHARM",
+        "value": "e6b51724-f747-11cf-9d89-0080c72e70a3",
+        "description": "ETK Super-Harm"
+      },
+      "TOP": {
+        "name": "TOP",
+        "standardName": "ID_EQUIP_ETK_TOP",
+        "value": "e6b51726-f747-11cf-9d89-0080c72e70a3",
+        "description": "TOP"
+      },
+      "ETK Harmoni": {
+        "name": "ETK Harmoni",
+        "standardName": "ID_EQUIP_ETK_HARMONI",
+        "value": "e6b51728-f747-11cf-9d89-0080c72e70a3",
+        "description": "ETK Harmoni"
+      },
+      "IEEE COMTRADE": {
+        "name": "IEEE COMTRADE",
+        "standardName": "ID_EQUIP_IEEE_COMTRADE",
+        "value": "e6b5172b-f747-11cf-9d89-0080c72e70a3",
+        "description": "IEEE COMTRADE"
+      },
+      "Public ATP": {
+        "name": "Public ATP",
+        "standardName": "ID_EQUIP_PUBLIC_ATP",
+        "value": "e6b5172c-f747-11cf-9d89-0080c72e70a3",
+        "description": "Public ATP"
+      },
+      "SMS": {
+        "name": "SMS",
+        "standardName": "ID_EQUIP_SQD_SMS",
+        "value": "e6b5172e-f747-11cf-9d89-0080c72e70a3",
+        "description": "SMS"
+      },
+      "PML 3710": {
+        "name": "PML 3710",
+        "standardName": "ID_EQUIP_PML_3710",
+        "value": "085726d0-1dc0-11d0-9d89-0080c72e70a3",
+        "description": "PML 3710"
+      },
+      "PML 3800": {
+        "name": "PML 3800",
+        "standardName": "ID_EQUIP_PML_3800",
+        "value": "085726d2-1dc0-11d0-9d89-0080c72e70a3",
+        "description": "PML 3800"
+      },
+      "PML 7700": {
+        "name": "PML 7700",
+        "standardName": "ID_EQUIP_PML_7700",
+        "value": "085726d4-1dc0-11d0-9d89-0080c72e70a3",
+        "description": "PML 7700"
+      },
+      "PML Log Server": {
+        "name": "PML Log Server",
+        "standardName": "ID_EQUIP_PML_LOGSERVER",
+        "value": "085726d6-1dc0-11d0-9d89-0080c72e70a3",
+        "description": "PML Log Server"
+      },
+      "ID_EQUIP_METONE_ELT15": {
+        "name": "ID_EQUIP_METONE_ELT15",
+        "standardName": "ID_EQUIP_METONE_ELT15",
+        "value": "b5b5da62-e2e1-11d4-82d9-00e09872a094",
+        "description": "ID_EQUIP_METONE_ELT15"
+      },
+      "PMI Scanner": {
+        "name": "PMI Scanner",
+        "standardName": "ID_EQUIP_PMI_SCANNER",
+        "value": "609acec1-993d-11d4-a4b3-444553540000",
+        "description": "PMI Scanner"
+      },
+      "ADAM 4017": {
+        "name": "ADAM 4017",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4017",
+        "value": "92b7977b-0c02-4766-95cf-dd379caeb417",
+        "description": "Advantech ADAM 4017"
+      },
+      "ETK DSS": {
+        "name": "ETK DSS",
+        "standardName": "ID_EQUIP_ETK_DSS",
+        "value": "d347ba66-e34c-11d4-82d9-00e09872a094",
+        "description": "Electrotek DSS"
+      },
+      "ADAM 4018": {
+        "name": "ADAM 4018",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4018",
+        "value": "3008151e-2317-4405-a59e-e7b3b20667a9",
+        "description": "Advantech ADAM 4018"
+      },
+      "ADAM 4018M": {
+        "name": "ADAM 4018M",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4018M",
+        "value": "3a1af807-1347-45f8-966a-f481c6ae208e",
+        "description": "Advantech ADAM 4018M"
+      },
+      "ADAM 4052": {
+        "name": "ADAM 4052",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4052",
+        "value": "8bba416b-a7ec-4616-8b8f-59fed749323d",
+        "description": "Advantech ADAM 4052"
+      },
+      "BMI 8800": {
+        "name": "BMI 8800",
+        "standardName": "ID_EQUIP_BMI_8800",
+        "value": "e77d1a81-1235-11d5-a390-0010a4924ecc",
+        "description": "BMI 8800"
+      },
+      "Trinergi PQM": {
+        "name": "Trinergi PQM",
+        "standardName": "ID_EQUIP_TRINERGI_PQM",
+        "value": "0fd5a3aa-d73a-11d2-ac3e-444553540000",
+        "description": "Trinergi PQM"
+      },
+      "Medcal": {
+        "name": "Medcal",
+        "standardName": "ID_EQUIP_MEDCAL",
+        "value": "f3bfa0a1-eb87-11d2-ac3e-444553540000",
+        "description": "Medcal"
+      },
+      "GE kV Energy Meter": {
+        "name": "GE kV Energy Meter",
+        "standardName": "ID_EQUIP_GE_KV",
+        "value": "5202bd01-245c-11d5-a4b3-444553540000",
+        "description": "GE kV Energy Meter"
+      },
+      "GE kV2 Energy Meter": {
+        "name": "GE kV2 Energy Meter",
+        "standardName": "ID_EQUIP_GE_KV2",
+        "value": "5202bd03-245c-11d5-a4b3-444553540000",
+        "description": "GE kV2 Energy Meter"
+      },
+      "Acumentrics Control": {
+        "name": "Acumentrics Control",
+        "standardName": "ID_EQUIP_ACUMENTRICS_CONTROL",
+        "value": "5202bd04-245c-11d5-a4b3-444553540000",
+        "description": "Acumentrics Control"
+      },
+      "ID_EQUIP_ETK_TEXTPQDIF": {
+        "name": "ID_EQUIP_ETK_TEXTPQDIF",
+        "standardName": "ID_EQUIP_ETK_TEXTPQDIF",
+        "value": "5202bd05-245c-11d5-a4b3-444553540000",
+        "description": "ID_EQUIP_ETK_TEXTPQDIF"
+      },
+      "PQWeb": {
+        "name": "PQWeb",
+        "standardName": "ID_EQUIP_ETK_PQWEB",
+        "value": "5202bd06-245c-11d5-a4b3-444553540000",
+        "description": "PQWeb"
+      },
+      "QWave Power Distribution": {
+        "name": "QWave Power Distribution",
+        "standardName": "ID_EQUIP_LEM_QWAVEPOWER_DISTRIBUTION",
+        "value": "2401bf48-9db2-46ec-acde-5dedde25e54e",
+        "description": "QWave Power Distribution"
+      },
+      "QWave Power Transmission": {
+        "name": "QWave Power Transmission",
+        "standardName": "ID_EQUIP_QWAVE_POWER_TRANSMISSION",
+        "value": "80c4a725-2816-11d4-8ab4-004005698d26",
+        "description": "QWave Power Transmission"
+      },
+      "QWave Micro": {
+        "name": "QWave Micro",
+        "standardName": "ID_EQUIP_LEM_QWAVEMICRO",
+        "value": "e0380e52-c205-43a0-9ff4-76fbd6765f37",
+        "description": "QWave Micro"
+      },
+      "QWave TWin": {
+        "name": "QWave TWin",
+        "standardName": "ID_EQUIP_LEM_QWAVETWIN",
+        "value": "67a42a2d-b831-4222-805e-d5fdebdd3a46",
+        "description": "QWave TWin"
+      },
+      "QWave Premium": {
+        "name": "QWave Premium",
+        "standardName": "ID_EQUIP_QWAVE_PREMIUM",
+        "value": "80c4a729-2816-11d4-8ab4-004005698d26",
+        "description": "QWave Premium"
+      },
+      "QWave Light": {
+        "name": "QWave Light",
+        "standardName": "ID_EQUIP_LEM_QWAVELIGHT",
+        "value": "5198ceb9-4b4e-439c-a1c0-218c963d6a9c",
+        "description": "QWave Light"
+      },
+      "QWave Nomad": {
+        "name": "QWave Nomad",
+        "standardName": "ID_EQUIP_LEM_QWAVENOMAD",
+        "value": "165f145d-90c3-4591-959a-33b101d4bf8b",
+        "description": "QWave Nomad"
+      },
+      "EWON 4000": {
+        "name": "EWON 4000",
+        "standardName": "ID_EQUIP_EWON_4000",
+        "value": "80c4a762-2816-11d4-8ab4-004005698d26",
+        "description": "EWON 4000"
+      },
+      "Qualimetre": {
+        "name": "Qualimetre",
+        "standardName": "ID_EQUIP_QUALIMETRE",
+        "value": "80c4a764-2816-11d4-8ab4-004005698d26",
+        "description": "Qualimetre"
+      },
+      "LEM Analyst 3Q": {
+        "name": "LEM Analyst 3Q",
+        "standardName": "ID_EQUIP_LEM_ANALYST3Q",
+        "value": "d567cb71-bcc0-41ee-8e8c-35851553f655",
+        "description": "LEM Analyst 3Q"
+      },
+      "LEM Analyst 1Q": {
+        "name": "LEM Analyst 1Q",
+        "standardName": "ID_EQUIP_LEM_ANALYST1Q",
+        "value": "477ecb3b-917f-4915-af99-a6c29ac18764",
+        "description": "LEM Analyst 1Q"
+      },
+      "LEM Analyst 2050": {
+        "name": "LEM Analyst 2050",
+        "standardName": "ID_EQUIP_LEM_ANALYST2050",
+        "value": "9878ccab-a842-4cac-950f-6d47215bffdf",
+        "description": "LEM Analyst 2050"
+      },
+      "LEM Analyst 2060": {
+        "name": "LEM Analyst 2060",
+        "standardName": "ID_EQUIP_LEM_ANALYST2060",
+        "value": "312471a2-b586-491c-855a-ca05459a7e20",
+        "description": "LEM Analyst 2060"
+      },
+      "LEM Midget 200": {
+        "name": "LEM Midget 200",
+        "standardName": "ID_EQUIP_LEM_MIDGET200",
+        "value": "8449f6b9-10f4-40a7-a1c3-be338eb97422",
+        "description": "LEM Midget 200"
+      },
+      "MBX 300": {
+        "name": "MBX 300",
+        "standardName": "ID_EQUIP_LEM_MBX300",
+        "value": "d4578d61-df2b-4218-a7b1-5ef1a9bb85fa",
+        "description": "MBX 300"
+      },
+      "MBX 800": {
+        "name": "MBX 800",
+        "standardName": "ID_EQUIP_LEM_MBX800",
+        "value": "1c14b57a-ba25-47fb-88fa-5fe5cec99e6a",
+        "description": "MBX 800"
+      },
+      "MBX 601": {
+        "name": "MBX 601",
+        "standardName": "ID_EQUIP_LEM_MBX601",
+        "value": "1f3cda7b-2ce1-4030-a390-e3d49c5615d2",
+        "description": "MBX 601"
+      },
+      "MBX 602": {
+        "name": "MBX 602",
+        "standardName": "ID_EQUIP_LEM_MBX602",
+        "value": "4a157756-414a-427b-9932-55760ed5f707",
+        "description": "MBX 602"
+      },
+      "MBX 603": {
+        "name": "MBX 603",
+        "standardName": "ID_EQUIP_LEM_MBX603",
+        "value": "f7b4677b-b277-45b5-aaae-5fb39341b390",
+        "description": "MBX 603"
+      },
+      "MBX 686": {
+        "name": "MBX 686",
+        "standardName": "ID_EQUIP_LEM_MBX686",
+        "value": "40004266-a978-4991-9ed6-c1cd730f5bf5",
+        "description": "MBX 686"
+      },
+      "Perma 701": {
+        "name": "Perma 701",
+        "standardName": "ID_EQUIP_LEM_PERMA701",
+        "value": "9b0dfd9d-d4e9-419d-ba10-c1cee6cf8f93",
+        "description": "Perma 701"
+      },
+      "Perma 702": {
+        "name": "Perma 702",
+        "standardName": "ID_EQUIP_LEM_PERMA702",
+        "value": "7f5d62ac-9fab-400f-b51a-f0f3941fb5aa",
+        "description": "Perma 702"
+      },
+      "Perma 705": {
+        "name": "Perma 705",
+        "standardName": "ID_EQUIP_LEM_PERMA705",
+        "value": "d85fea9c-14d5-45eb-831f-e03973092bd8",
+        "description": "Perma 705"
+      },
+      "Perma 706": {
+        "name": "Perma 706",
+        "standardName": "ID_EQUIP_LEM_PERMA706",
+        "value": "16d6bbfc-0b5a-4cf0-81cf-48a3105eff4f",
+        "description": "Perma 706"
+      },
+      "ID_EQUIP_LEM_QWAVEPREMIUM": {
+        "name": "ID_EQUIP_LEM_QWAVEPREMIUM",
+        "standardName": "ID_EQUIP_LEM_QWAVEPREMIUM",
+        "value": "6b609a29-4a64-4d1c-a6e3-caef94fa56a0",
+        "description": "ID_EQUIP_LEM_QWAVEPREMIUM"
+      },
+      "QWave Power Transport": {
+        "name": "QWave Power Transport",
+        "standardName": "ID_EQUIP_LEM_QWAVEPOWER_TRANSPORT",
+        "value": "d4422eeb-b1cd-4ba9-a7c8-5d141df40518",
+        "description": "QWave Power Transport"
+      },
+      "TOPAS LT": {
+        "name": "TOPAS LT",
+        "standardName": "ID_EQUIP_LEM_TOPASLT",
+        "value": "9c46483a-541e-4d66-9c10-f943abfc348a",
+        "description": "TOPAS LT"
+      },
+      "TOPAS 1000": {
+        "name": "TOPAS 1000",
+        "standardName": "ID_EQUIP_LEM_TOPAS1000",
+        "value": "459b8614-6724-48fb-b5d4-f149ed0c62f5",
+        "description": "TOPAS 1000"
+      },
+      "TOPAS 1019": {
+        "name": "TOPAS 1019",
+        "standardName": "ID_EQUIP_LEM_TOPAS1019",
+        "value": "7b11408b-9d2c-407c-84a5-89440218dcf8",
+        "description": "TOPAS 1019"
+      },
+      "TOPAS 1020": {
+        "name": "TOPAS 1020",
+        "standardName": "ID_EQUIP_LEM_TOPAS1020",
+        "value": "d1def77d-990f-484e-a166-f7921170a64b",
+        "description": "TOPAS 1020"
+      },
+      "TOPAS 1040": {
+        "name": "TOPAS 1040",
+        "standardName": "ID_EQUIP_LEM_TOPAS1040",
+        "value": "d3cc1de2-6e6b-4b6e-ad90-10d6585f8fa2",
+        "description": "TOPAS 1040"
+      },
+      "BEN 5000": {
+        "name": "BEN 5000",
+        "standardName": "ID_EQUIP_LEM_BEN5000",
+        "value": "a70e32b1-2f1a-4543-a684-78a4b5be34bb",
+        "description": "BEN 5000"
+      },
+      "BEN 6000": {
+        "name": "BEN 6000",
+        "standardName": "ID_EQUIP_LEM_BEN6000",
+        "value": "05a4c1b5-6681-47e6-9f64-8da125dbec32",
+        "description": "BEN 6000"
+      },
+      "LEM EWave": {
+        "name": "LEM EWave",
+        "standardName": "ID_EQUIP_LEM_EWAVE",
+        "value": "e46981d5-708d-4822-97aa-fdb6f73b3af2",
+        "description": "LEM EWave"
+      },
+      "ID_EQUIP_LEM_EWON4000": {
+        "name": "ID_EQUIP_LEM_EWON4000",
+        "standardName": "ID_EQUIP_LEM_EWON4000",
+        "value": "d4c0895c-fd48-4981-997c-9e70d80efb06",
+        "description": "ID_EQUIP_LEM_EWON4000"
+      },
+      "WPT 5510": {
+        "name": "WPT 5510",
+        "standardName": "ID_EQUIP_WPT_5510",
+        "value": "752871de-0583-4d44-a9ae-c5fadc0144ac",
+        "description": "WPT 5510"
+      },
+      "WPT 5520": {
+        "name": "WPT 5520",
+        "standardName": "ID_EQUIP_WPT_5520",
+        "value": "0b72d289-7645-40b8-946e-c3ce4f1bcd37",
+        "description": "WPT 5520"
+      },
+      "WPT 5530T": {
+        "name": "WPT 5530T",
+        "standardName": "ID_EQUIP_WPT_5530T",
+        "value": "8f88ea9e-1007-4569-ab47-756f292a23ed",
+        "description": "WPT 5530T"
+      },
+      "WPT 5560": {
+        "name": "WPT 5560",
+        "standardName": "ID_EQUIP_WPT_5560",
+        "value": "5fd9c0ff-4432-41b5-9a9e-9a32ba2cf005",
+        "description": "WPT 5560"
+      },
+      "WPT 5590": {
+        "name": "WPT 5590",
+        "standardName": "ID_EQUIP_WPT_5590",
+        "value": "2861d5ca-23ac-4a51-a5a0-498da61d26dd",
+        "description": "WPT 5590"
+      },
+      "ETK Node Center": {
+        "name": "ETK Node Center",
+        "standardName": "ID_EQUIP_ETK_NODECENTER",
+        "value": "c52e8460-58b4-4f1a-8469-69ca3fef9ff1",
+        "description": "ETK Node Center"
+      },
+      "WPT Dran View": {
+        "name": "WPT Dran View",
+        "standardName": "ID_EQUIP_WPT_DRANVIEW",
+        "value": "08d97aa1-1719-11d6-a4b3-444553540000",
+        "description": "WPT Dran View"
+      },
+      "ADAM 5017": {
+        "name": "ADAM 5017",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM5017",
+        "value": "2f46263c-92ac-4717-8a08-a6177df3f611",
+        "description": "ADAM 5017"
+      },
+      "ADAM 5018": {
+        "name": "ADAM 5018",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM5018",
+        "value": "cc2d3247-fe65-4db6-8206-500a23151bb2",
+        "description": "ADAM 5018"
+      },
+      "ADAM 5080": {
+        "name": "ADAM 5080",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM5080",
+        "value": "6c37b63c-e770-4b85-bd32-4739d6eb9846",
+        "description": "ADAM 5080"
+      },
+      "ADAM 5052": {
+        "name": "ADAM 5052",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM5052",
+        "value": "e9261dfe-3d44-47e3-ac36-3b097faa8cda",
+        "description": "ADAM 5052"
+      },
+      "ADAM 4050": {
+        "name": "ADAM 4050",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4050",
+        "value": "9212066d-ea65-477e-bf95-e4a0066d25ce",
+        "description": "ADAM 4050"
+      },
+      "ADAM 4053": {
+        "name": "ADAM 4053",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4053",
+        "value": "dc29b83f-bebe-4cf3-b3fb-00dc63626dd9",
+        "description": "ADAM 4053"
+      },
+      "ADAM 4080": {
+        "name": "ADAM 4080",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM4080",
+        "value": "64fc42c6-3c90-4633-99df-2c6058214b72",
+        "description": "ADAM 4080"
+      },
+      "ADAM 5050": {
+        "name": "ADAM 5050",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM5050",
+        "value": "c950a2e3-7a35-440c-8660-63f611972519",
+        "description": "ADAM 5050"
+      },
+      "ADAM 5051": {
+        "name": "ADAM 5051",
+        "standardName": "ID_EQUIP_ADVANTECH_ADAM5051",
+        "value": "c8f92334-a69b-4856-b253-ec2471d137d6",
+        "description": "ADAM 5051"
+      },
+      "BK 550": {
+        "name": "BK 550",
+        "standardName": "ID_EQUIP_ELCOM_BK550",
+        "value": "f4380a60-6f1d-11d6-9cb3-0020e010453b",
+        "description": "ELCOM_BK550"
+      }
+    },
+    "tagInstrumentTypeID": {
+      "ID_INSTR_TYPE_SCOPE": {
+        "name": "ID_INSTR_TYPE_SCOPE",
+        "standardName": "ID_INSTR_TYPE_SCOPE",
+        "value": "e6b51735-f747-11cf-9d89-0080c72e70a3",
+        "description": "ID_INSTR_TYPE_SCOPE"
+      },
+      "ID_INSTR_TYPE_FR": {
+        "name": "ID_INSTR_TYPE_FR",
+        "standardName": "ID_INSTR_TYPE_FR",
+        "value": "e6b51736-f747-11cf-9d89-0080c72e70a3",
+        "description": "Frequency recorder."
+      },
+      "ID_INSTR_TYPE_PQM": {
+        "name": "ID_INSTR_TYPE_PQM",
+        "standardName": "ID_INSTR_TYPE_PQM",
+        "value": "e6b51737-f747-11cf-9d89-0080c72e70a3",
+        "description": "Power quality meter."
+      },
+      "ID_INSTR_TYPE_VR": {
+        "name": "ID_INSTR_TYPE_VR",
+        "standardName": "ID_INSTR_TYPE_VR",
+        "value": "e6b51738-f747-11cf-9d89-0080c72e70a3",
+        "description": "Voltage recorder."
+      },
+      "ID_INSTR_TYPE_SA": {
+        "name": "ID_INSTR_TYPE_SA",
+        "standardName": "ID_INSTR_TYPE_SA",
+        "value": "c690e871-f755-11cf-9d89-0080c72e70a3",
+        "description": "ID_INSTR_TYPE_SA"
+      }
+    },
+    "tagPhaseID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_PHASE_NONE",
+        "value": "0",
+        "description": "Phase is not applicable."
+      },
+      "AN": {
+        "name": "AN",
+        "standardName": "ID_PHASE_AN",
+        "value": "1",
+        "description": "A-to-neutral."
+      },
+      "BN": {
+        "name": "BN",
+        "standardName": "ID_PHASE_BN",
+        "value": "2",
+        "description": "B-to-neutral."
+      },
+      "CN": {
+        "name": "CN",
+        "standardName": "ID_PHASE_CN",
+        "value": "3",
+        "description": "C-to-neutral."
+      },
+      "NG": {
+        "name": "NG",
+        "standardName": "ID_PHASE_NG",
+        "value": "4",
+        "description": "Neutral-to-ground."
+      },
+      "AB": {
+        "name": "AB",
+        "standardName": "ID_PHASE_AB",
+        "value": "5",
+        "description": "A-to-B."
+      },
+      "BC": {
+        "name": "BC",
+        "standardName": "ID_PHASE_BC",
+        "value": "6",
+        "description": "B-to-C."
+      },
+      "CA": {
+        "name": "CA",
+        "standardName": "ID_PHASE_CA",
+        "value": "7",
+        "description": "C-to-A."
+      },
+      "Residual": {
+        "name": "Residual",
+        "standardName": "ID_PHASE_RES",
+        "value": "8",
+        "description": "Residual - the vector or point-on-wave sum of Phases A, B, and C.  Should be zero in a perfectly balanced system."
+      },
+      "Net": {
+        "name": "Net",
+        "standardName": "ID_PHASE_NET",
+        "value": "9",
+        "description": "Net - the vector or point-on-wave sum of Phases A, B, C and the Neutral phase.  Should be zero in a 4 wire system with no earth return path."
+      },
+      "Total": {
+        "name": "Total",
+        "standardName": "ID_PHASE_TOTAL",
+        "value": "13",
+        "description": "The value representing a total or other summarizing value in a multi-phase system."
+      },
+      "LineToNeutralAverage": {
+        "name": "LineToNeutralAverage",
+        "standardName": "ID_PHASE_LN_AVE",
+        "value": "14",
+        "description": "The value representing average of 3 line-neutral values"
+      },
+      "LineToLineAverage": {
+        "name": "LineToLineAverage",
+        "standardName": "ID_PHASE_LL_AVE",
+        "value": "15",
+        "description": "The value representing average of 3 line-line values"
+      },
+      "Worst": {
+        "name": "Worst",
+        "standardName": "ID_PHASE_WORST",
+        "value": "16",
+        "description": "The value representing the \"worst\" of the 3 phases"
+      },
+      "Plus": {
+        "name": "Plus",
+        "standardName": "ID_PHASE_PLUS",
+        "value": "17",
+        "description": "DC Positive"
+      },
+      "Minus": {
+        "name": "Minus",
+        "standardName": "ID_PHASE_MINUS",
+        "value": "18",
+        "description": "DC Negative"
+      },
+      "General1": {
+        "name": "General1",
+        "standardName": "ID_PHASE_GENERAL_1",
+        "value": "19",
+        "description": "Generic Phase 1"
+      },
+      "General2": {
+        "name": "General2",
+        "standardName": "ID_PHASE_GENERAL_2",
+        "value": "20",
+        "description": "Generic Phase 2"
+      },
+      "General3": {
+        "name": "General3",
+        "standardName": "ID_PHASE_GENERAL_3",
+        "value": "21",
+        "description": "Generic Phase 3"
+      },
+      "General4": {
+        "name": "General4",
+        "standardName": "ID_PHASE_GENERAL_4",
+        "value": "22",
+        "description": "Generic Phase 4"
+      },
+      "General5": {
+        "name": "General5",
+        "standardName": "ID_PHASE_GENERAL_5",
+        "value": "23",
+        "description": "Generic Phase 5"
+      },
+      "General6": {
+        "name": "General6",
+        "standardName": "ID_PHASE_GENERAL_6",
+        "value": "24",
+        "description": "Generic Phase 6"
+      },
+      "General7": {
+        "name": "General7",
+        "standardName": "ID_PHASE_GENERAL_7",
+        "value": "25",
+        "description": "Generic Phase 7"
+      },
+      "General8": {
+        "name": "General8",
+        "standardName": "ID_PHASE_GENERAL_8",
+        "value": "26",
+        "description": "Generic Phase 8"
+      },
+      "General9": {
+        "name": "General9",
+        "standardName": "ID_PHASE_GENERAL_9",
+        "value": "27",
+        "description": "Generic Phase 9"
+      },
+      "General10": {
+        "name": "General10",
+        "standardName": "ID_PHASE_GENERAL_10",
+        "value": "28",
+        "description": "Generic Phase 10"
+      },
+      "General11": {
+        "name": "General11",
+        "standardName": "ID_PHASE_GENERAL_11",
+        "value": "29",
+        "description": "Generic Phase 11"
+      },
+      "General12": {
+        "name": "General12",
+        "standardName": "ID_PHASE_GENERAL_12",
+        "value": "30",
+        "description": "Generic Phase 12"
+      },
+      "General13": {
+        "name": "General13",
+        "standardName": "ID_PHASE_GENERAL_13",
+        "value": "31",
+        "description": "Generic Phase 13"
+      },
+      "General14": {
+        "name": "General14",
+        "standardName": "ID_PHASE_GENERAL_14",
+        "value": "32",
+        "description": "Generic Phase 14"
+      },
+      "General15": {
+        "name": "General15",
+        "standardName": "ID_PHASE_GENERAL_15",
+        "value": "33",
+        "description": "Generic Phase 15"
+      },
+      "General16": {
+        "name": "General16",
+        "standardName": "ID_PHASE_GENERAL_16",
+        "value": "34",
+        "description": "Generic Phase 16"
+      }
+    },
+    "tagQuantityTypeID": {
+      "WaveForm": {
+        "name": "WaveForm",
+        "standardName": "ID_QT_WAVEFORM",
+        "value": "67f6af80-f753-11cf-9d89-0080c72e70a3",
+        "description": "TIME, VAL / For point-on-wave measurements,"
+      },
+      "ValueLog": {
+        "name": "ValueLog",
+        "standardName": "ID_QT_VALUELOG",
+        "value": "67f6af82-f753-11cf-9d89-0080c72e70a3",
+        "description": "TIME, MIN, MAX, AVG, INST, VAL ? / For time-based logged entries."
+      },
+      "Phasor": {
+        "name": "Phasor",
+        "standardName": "ID_QT_PHASOR",
+        "value": "67f6af81-f753-11cf-9d89-0080c72e70a3",
+        "description": "TIME, MIN, MAX, AVG, INST, VAL, PHASEANGLE ? / For time-domain  measurements including magnitudes and (optionally) phase angle."
+      },
+      "Response": {
+        "name": "Response",
+        "standardName": "ID_QT_RESPONSE",
+        "value": "67f6af85-f753-11cf-9d89-0080c72e70a3",
+        "description": "VAL (FREQUENCY), VAL, PHASEANGLE / For frequency-domain measurements including magnitude and (optionally) phase angle."
+      },
+      "Flash": {
+        "name": "Flash",
+        "standardName": "ID_QT_FLASH",
+        "value": "67f6af83-f753-11cf-9d89-0080c72e70a3",
+        "description": "TIME, LAT, LON, VAL, POLARITY, ELLIPSE"
+      },
+      "Histogram": {
+        "name": "Histogram",
+        "standardName": "ID_QT_HISTOGRAM",
+        "value": "67f6af87-f753-11cf-9d89-0080c72e70a3",
+        "description": "BINLOW, BINHIGH, BINID, COUNT"
+      },
+      "Histogram3D": {
+        "name": "Histogram3D",
+        "standardName": "ID_QT_HISTOGRAM3D",
+        "value": "67f6af88-f753-11cf-9d89-0080c72e70a3",
+        "description": "XBINLOW, XBINHIGH, YBINLOW, YBINHIGH, BINID, COUNT"
+      },
+      "CPF": {
+        "name": "CPF",
+        "standardName": "ID_QT_CPF",
+        "value": "67f6af89-f753-11cf-9d89-0080c72e70a3",
+        "description": "PROB, VAL. (Note that the specific P1 value types have been deprecated.)"
+      },
+      "XY": {
+        "name": "XY",
+        "standardName": "ID_QT_XY",
+        "value": "67f6af8a-f753-11cf-9d89-0080c72e70a3",
+        "description": "VAL, VAL"
+      },
+      "MagDur": {
+        "name": "MagDur",
+        "standardName": "ID_QT_MAGDUR",
+        "value": "67f6af8b-f753-11cf-9d89-0080c72e70a3",
+        "description": "VAL, DUR"
+      },
+      "XYZ": {
+        "name": "XYZ",
+        "standardName": "ID_QT_XYZ",
+        "value": "67f6af8c-f753-11cf-9d89-0080c72e70a3",
+        "description": "VAL, VAL, VAL"
+      },
+      "MagDurTime": {
+        "name": "MagDurTime",
+        "standardName": "ID_QT_MAGDURTIME",
+        "value": "67f6af8d-f753-11cf-9d89-0080c72e70a3",
+        "description": "TIME, VAL, DUR"
+      },
+      "MagDurCount": {
+        "name": "MagDurCount",
+        "standardName": "ID_QT_MAGDURCOUNT",
+        "value": "67f6af8e-f753-11cf-9d89-0080c72e70a3",
+        "description": "TIME, VAL, DUR, COUNT"
+      }
+    },
+    "tagDisturbanceCategoryID": {
+      "ID_DISTURB_1159_NONE": {
+        "name": "ID_DISTURB_1159_NONE",
+        "standardName": "ID_DISTURB_1159_NONE",
+        "value": "67f6af8f-f753-11cf-9d89-0080c72e70a3",
+        "description": "No IEEE 1159 definition applicable or desired"
+      },
+      "ID_DISTURB_1159_TRANSIENT": {
+        "name": "ID_DISTURB_1159_TRANSIENT",
+        "standardName": "ID_DISTURB_1159_TRANSIENT",
+        "value": "67f6af90-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Transient"
+      },
+      "ID_DISTURB_1159_TRANSIENT_IMPULSIVE": {
+        "name": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE",
+        "value": "dd56ef60-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Impulsive Transient"
+      },
+      "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_NANO": {
+        "name": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_NANO",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_NANO",
+        "value": "dd56ef61-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Impulsive Transient - nanosecond duration"
+      },
+      "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_MICRO": {
+        "name": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_MICRO",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_MICRO",
+        "value": "dd56ef63-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Impulsive Transient - microsecond duration"
+      },
+      "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_MILLI": {
+        "name": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_MILLI",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_IMPULSIVE_MILLI",
+        "value": "dd56ef64-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Impulsive Transient - millisecond duration"
+      },
+      "ID_DISTURB_1159_TRANSIENT_OSCILLATORY": {
+        "name": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY",
+        "value": "dd56ef65-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Oscillatory Transient"
+      },
+      "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_LOWFREQ": {
+        "name": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_LOWFREQ",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_LOWFREQ",
+        "value": "dd56ef66-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Oscillatory Transient - Low Frequency"
+      },
+      "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_MEDFREQ": {
+        "name": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_MEDFREQ",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_MEDFREQ",
+        "value": "dd56ef67-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Oscillatory Transient - Medium Frequency"
+      },
+      "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_HIGHFREQ": {
+        "name": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_HIGHFREQ",
+        "standardName": "ID_DISTURB_1159_TRANSIENT_OSCILLATORY_HIGHFREQ",
+        "value": "dd56ef68-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Oscillatory Transient - High Frequency"
+      },
+      "ID_DISTURB_1159_SHORTDUR": {
+        "name": "ID_DISTURB_1159_SHORTDUR",
+        "standardName": "ID_DISTURB_1159_SHORTDUR",
+        "value": "67f6af91-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Short Duration RMS Variation"
+      },
+      "ID_DISTURB_1159_SHORTDUR_INSTANT": {
+        "name": "ID_DISTURB_1159_SHORTDUR_INSTANT",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_INSTANT",
+        "value": "dd56ef69-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Instantaneous duration"
+      },
+      "ID_DISTURB_1159_SHORTDUR_INSTANT_SAG": {
+        "name": "ID_DISTURB_1159_SHORTDUR_INSTANT_SAG",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_INSTANT_SAG",
+        "value": "dd56ef6a-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Instantaneous Sag"
+      },
+      "ID_DISTURB_1159_SHORTDUR_INSTANT_SWELL": {
+        "name": "ID_DISTURB_1159_SHORTDUR_INSTANT_SWELL",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_INSTANT_SWELL",
+        "value": "dd56ef6b-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Instantaneous Swell"
+      },
+      "ID_DISTURB_1159_SHORTDUR_MOMENT": {
+        "name": "ID_DISTURB_1159_SHORTDUR_MOMENT",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_MOMENT",
+        "value": "dd56ef6c-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Momentary Duration"
+      },
+      "ID_DISTURB_1159_SHORTDUR_MOMENT_INTERRUPT": {
+        "name": "ID_DISTURB_1159_SHORTDUR_MOMENT_INTERRUPT",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_MOMENT_INTERRUPT",
+        "value": "dd56ef6d-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Momentary Interruption"
+      },
+      "ID_DISTURB_1159_SHORTDUR_MOMENT_SAG": {
+        "name": "ID_DISTURB_1159_SHORTDUR_MOMENT_SAG",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_MOMENT_SAG",
+        "value": "dd56ef6e-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Momentary Sag"
+      },
+      "ID_DISTURB_1159_SHORTDUR_MOMENT_SWELL": {
+        "name": "ID_DISTURB_1159_SHORTDUR_MOMENT_SWELL",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_MOMENT_SWELL",
+        "value": "dd56ef6f-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Momentary Swell"
+      },
+      "ID_DISTURB_1159_SHORTDUR_TEMP": {
+        "name": "ID_DISTURB_1159_SHORTDUR_TEMP",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_TEMP",
+        "value": "dd56ef70-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Temporary Duration"
+      },
+      "ID_DISTURB_1159_SHORTDUR_TEMP_INTERRUPT": {
+        "name": "ID_DISTURB_1159_SHORTDUR_TEMP_INTERRUPT",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_TEMP_INTERRUPT",
+        "value": "dd56ef71-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Temporary Interruption"
+      },
+      "ID_DISTURB_1159_SHORTDUR_TEMP_SAG": {
+        "name": "ID_DISTURB_1159_SHORTDUR_TEMP_SAG",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_TEMP_SAG",
+        "value": "dd56ef72-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Temporary Sag"
+      },
+      "ID_DISTURB_1159_SHORTDUR_TEMP_SWELL": {
+        "name": "ID_DISTURB_1159_SHORTDUR_TEMP_SWELL",
+        "standardName": "ID_DISTURB_1159_SHORTDUR_TEMP_SWELL",
+        "value": "dd56ef73-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Short Duration RMS Variation - Temporary Swell"
+      },
+      "ID_DISTURB_1159_LONGDUR": {
+        "name": "ID_DISTURB_1159_LONGDUR",
+        "standardName": "ID_DISTURB_1159_LONGDUR",
+        "value": "67f6af92-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Long Duration RMS Variation"
+      },
+      "ID_DISTURB_1159_LONGDUR_INTERRUPT": {
+        "name": "ID_DISTURB_1159_LONGDUR_INTERRUPT",
+        "standardName": "ID_DISTURB_1159_LONGDUR_INTERRUPT",
+        "value": "dd56ef74-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Long Duration RMS Variation - Interruption"
+      },
+      "ID_DISTURB_1159_LONGDUR_SAG": {
+        "name": "ID_DISTURB_1159_LONGDUR_SAG",
+        "standardName": "ID_DISTURB_1159_LONGDUR_SAG",
+        "value": "dd56ef75-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Long Duration RMS Variation - Undervoltage"
+      },
+      "ID_DISTURB_1159_LONGDUR_SWELL": {
+        "name": "ID_DISTURB_1159_LONGDUR_SWELL",
+        "standardName": "ID_DISTURB_1159_LONGDUR_SWELL",
+        "value": "dd56ef76-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Long Duration RMS Variation - Overvoltage"
+      },
+      "ID_DISTURB_1159_IMBALANCE": {
+        "name": "ID_DISTURB_1159_IMBALANCE",
+        "standardName": "ID_DISTURB_1159_IMBALANCE",
+        "value": "dd56ef77-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Imbalance"
+      },
+      "ID_DISTURB_1159_POWERFREQVARIATION": {
+        "name": "ID_DISTURB_1159_POWERFREQVARIATION",
+        "standardName": "ID_DISTURB_1159_POWERFREQVARIATION",
+        "value": "dd56ef7e-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Power Frequency Variation"
+      },
+      "ID_DISTURB_1159_VOLTAGEFLUCTUATION": {
+        "name": "ID_DISTURB_1159_VOLTAGEFLUCTUATION",
+        "standardName": "ID_DISTURB_1159_VOLTAGEFLUCTUATION",
+        "value": "67f6af93-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Voltage Fluctuation (causes light flicker)"
+      },
+      "ID_DISTURB_1159_WAVEDISTORT": {
+        "name": "ID_DISTURB_1159_WAVEDISTORT",
+        "standardName": "ID_DISTURB_1159_WAVEDISTORT",
+        "value": "67f6af94-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Waveform Distortion"
+      },
+      "ID_DISTURB_1159_WAVEDISTORT_DCOFFSET": {
+        "name": "ID_DISTURB_1159_WAVEDISTORT_DCOFFSET",
+        "standardName": "ID_DISTURB_1159_WAVEDISTORT_DCOFFSET",
+        "value": "dd56ef78-7edd-11d2-b30a-00609789d193",
+        "description": "DC offset of voltage or current waveform"
+      },
+      "ID_DISTURB_1159_WAVEDISTORT_HARMONIC": {
+        "name": "ID_DISTURB_1159_WAVEDISTORT_HARMONIC",
+        "standardName": "ID_DISTURB_1159_WAVEDISTORT_HARMONIC",
+        "value": "dd56ef79-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Waveform Harmonics Present"
+      },
+      "ID_DISTURB_1159_WAVEDISTORT_INTERHARMONIC": {
+        "name": "ID_DISTURB_1159_WAVEDISTORT_INTERHARMONIC",
+        "standardName": "ID_DISTURB_1159_WAVEDISTORT_INTERHARMONIC",
+        "value": "dd56ef7a-7edd-11d2-b30a-00609789d193",
+        "description": "IEEE 1159 Waveform Interharmonics Present"
+      },
+      "ID_DISTURB_1159_WAVEDISTORT_NOTCHING": {
+        "name": "ID_DISTURB_1159_WAVEDISTORT_NOTCHING",
+        "standardName": "ID_DISTURB_1159_WAVEDISTORT_NOTCHING",
+        "value": "67f6af95-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Waveform Notching Present"
+      },
+      "ID_DISTURB_1159_WAVEDISTORT_NOISE": {
+        "name": "ID_DISTURB_1159_WAVEDISTORT_NOISE",
+        "standardName": "ID_DISTURB_1159_WAVEDISTORT_NOISE",
+        "value": "67f6af96-f753-11cf-9d89-0080c72e70a3",
+        "description": "IEEE 1159 Waveform Noise Present"
+      }
+    },
+    "tagQuantityUnitsID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_QU_NONE",
+        "value": "0",
+        "description": "Unitless."
+      },
+      "Seconds": {
+        "name": "Seconds",
+        "standardName": "ID_QU_SECONDS",
+        "value": "2",
+        "description": "Seconds -- relative from the beginning time of the observation (using tagTimeStart as the beginning time)."
+      },
+      "Timestamp": {
+        "name": "Timestamp",
+        "standardName": "ID_QU_TIMESTAMP",
+        "value": "1",
+        "description": "Absolute time. Each timestamp in the series must be in absolute time using the TIMESTAMPPQDIF physical type. This is generally *not* recommended, but is acceptible when _VALUELOG is used."
+      },
+      "Cycles": {
+        "name": "Cycles",
+        "standardName": "ID_QU_CYCLES",
+        "value": "3",
+        "description": "The timestamps are in cycles, relative to tagTimeStart."
+      },
+      "Volts": {
+        "name": "Volts",
+        "standardName": "ID_QU_VOLTS",
+        "value": "6",
+        "description": "Volts."
+      },
+      "Amps": {
+        "name": "Amps",
+        "standardName": "ID_QU_AMPS",
+        "value": "7",
+        "description": "Amperes."
+      },
+      "VoltAmps": {
+        "name": "VoltAmps",
+        "standardName": "ID_QU_VA",
+        "value": "8",
+        "description": "Volt-amperes."
+      },
+      "Watts": {
+        "name": "Watts",
+        "standardName": "ID_QU_WATTS",
+        "value": "9",
+        "description": "Watts."
+      },
+      "Vars": {
+        "name": "Vars",
+        "standardName": "ID_QU_VARS",
+        "value": "10",
+        "description": "Volt-amperes reactive."
+      },
+      "Ohms": {
+        "name": "Ohms",
+        "standardName": "ID_QU_OHMS",
+        "value": "11",
+        "description": "Ohms."
+      },
+      "Siemens": {
+        "name": "Siemens",
+        "standardName": "ID_QU_SIEMENS",
+        "value": "12",
+        "description": "Siemens."
+      },
+      "VoltsPerAmp": {
+        "name": "VoltsPerAmp",
+        "standardName": "ID_QU_VOLTSPERAMP",
+        "value": "13",
+        "description": "Volts per amp."
+      },
+      "Joules": {
+        "name": "Joules",
+        "standardName": "ID_QU_JOULES",
+        "value": "14",
+        "description": "Joules."
+      },
+      "Hertz": {
+        "name": "Hertz",
+        "standardName": "ID_QU_HERTZ",
+        "value": "15",
+        "description": "Hertz."
+      },
+      "Celcius": {
+        "name": "Celcius",
+        "standardName": "ID_QU_CELCIUS",
+        "value": "16",
+        "description": "Celcius."
+      },
+      "Degrees": {
+        "name": "Degrees",
+        "standardName": "ID_QU_DEGREES",
+        "value": "17",
+        "description": "Degrees of arc."
+      },
+      "Decibels": {
+        "name": "Decibels",
+        "standardName": "ID_QU_DB",
+        "value": "18",
+        "description": "Decibels."
+      },
+      "Percent": {
+        "name": "Percent",
+        "standardName": "ID_QU_PERCENT",
+        "value": "19",
+        "description": "Percent."
+      },
+      "PerUnit": {
+        "name": "PerUnit",
+        "standardName": "ID_QU_PERUNIT",
+        "value": "20",
+        "description": "Per-unit."
+      },
+      "Samples": {
+        "name": "Samples",
+        "standardName": "ID_QU_SAMPLES",
+        "value": "21",
+        "description": "Number of counts or samples"
+      },
+      "VarHours": {
+        "name": "VarHours",
+        "standardName": "ID_QU_VARHOURS",
+        "value": "22",
+        "description": "Energy - var-hours"
+      },
+      "WattHours": {
+        "name": "WattHours",
+        "standardName": "ID_QU_WATTHOURS",
+        "value": "23",
+        "description": "Energy - Watt-hours"
+      },
+      "VoltAmpHours": {
+        "name": "VoltAmpHours",
+        "standardName": "ID_QU_VAHOURS",
+        "value": "24",
+        "description": "Energy - VA-hours"
+      },
+      "MetersPerSecond": {
+        "name": "MetersPerSecond",
+        "standardName": "ID_QU_MPS",
+        "value": "25",
+        "description": "Meters/Second"
+      },
+      "MilesPerHour": {
+        "name": "MilesPerHour",
+        "standardName": "ID_QU_MPH",
+        "value": "26",
+        "description": "Miles/Hr"
+      },
+      "Bars": {
+        "name": "Bars",
+        "standardName": "ID_QU_BARS",
+        "value": "27",
+        "description": "Pressure, Bars"
+      },
+      "Pascals": {
+        "name": "Pascals",
+        "standardName": "ID_QU_PASCALS",
+        "value": "28",
+        "description": "Pressure, Pascals"
+      },
+      "Newtons": {
+        "name": "Newtons",
+        "standardName": "ID_QU_NEWTONS",
+        "value": "29",
+        "description": "Force, Newtons"
+      },
+      "NewtonMeters": {
+        "name": "NewtonMeters",
+        "standardName": "ID_QU_NEWTONMETERS",
+        "value": "30",
+        "description": "Torque, Newton Meters"
+      },
+      "RevolutionsPerMinute": {
+        "name": "RevolutionsPerMinute",
+        "standardName": "ID_QU_RPM",
+        "value": "31",
+        "description": "Revolutions/minute"
+      },
+      "RadiansPerSecond": {
+        "name": "RadiansPerSecond",
+        "standardName": "ID_QU_RADPERSEC",
+        "value": "32",
+        "description": "Radians/Second"
+      },
+      "Meters": {
+        "name": "Meters",
+        "standardName": "ID_QU_METERS",
+        "value": "33",
+        "description": "Meters"
+      },
+      "WeberTurns": {
+        "name": "WeberTurns",
+        "standardName": "ID_QU_WEBERTURNS",
+        "value": "34",
+        "description": "Flux Linkage - Weber Turns"
+      },
+      "Teslas": {
+        "name": "Teslas",
+        "standardName": "ID_QU_TESLAS",
+        "value": "35",
+        "description": "Flux Density - Teslas"
+      },
+      "Webers": {
+        "name": "Webers",
+        "standardName": "ID_QU_WEBERS",
+        "value": "36",
+        "description": "Magnetic Field - Webers"
+      },
+      "VoltsPerVolt": {
+        "name": "VoltsPerVolt",
+        "standardName": "ID_QU_VOLTSPERVOLT",
+        "value": "37",
+        "description": "Volts/Volts transfer function"
+      },
+      "AmpsPerAmp": {
+        "name": "AmpsPerAmp",
+        "standardName": "ID_QU_AMPSPERAMP",
+        "value": "38",
+        "description": "Amps/Amps transfer function"
+      },
+      "AmpsPerVolt": {
+        "name": "AmpsPerVolt",
+        "standardName": "ID_QU_AMPSPERVOLT",
+        "value": "39",
+        "description": "Impedance Transfer Funtion"
+      }
+    },
+    "tagValueTypeID": {
+      "Values": {
+        "name": "Values",
+        "standardName": "ID_SERIES_VALUE_TYPE_VAL",
+        "value": "67f6af97-f753-11cf-9d89-0080c72e70a3",
+        "description": "This should be the default value type for a measurement -- a value."
+      },
+      "Time": {
+        "name": "Time",
+        "standardName": "ID_SERIES_VALUE_TYPE_TIME",
+        "value": "c690e862-f755-11cf-9d89-0080c72e70a3",
+        "description": "Time."
+      },
+      "Minimum": {
+        "name": "Minimum",
+        "standardName": "ID_SERIES_VALUE_TYPE_MIN",
+        "value": "67f6af98-f753-11cf-9d89-0080c72e70a3",
+        "description": "Minimum."
+      },
+      "Maximum": {
+        "name": "Maximum",
+        "standardName": "ID_SERIES_VALUE_TYPE_MAX",
+        "value": "67f6af99-f753-11cf-9d89-0080c72e70a3",
+        "description": "Maximum."
+      },
+      "Average": {
+        "name": "Average",
+        "standardName": "ID_SERIES_VALUE_TYPE_AVG",
+        "value": "67f6af9a-f753-11cf-9d89-0080c72e70a3",
+        "description": "Average."
+      },
+      "Instantaneous": {
+        "name": "Instantaneous",
+        "standardName": "ID_SERIES_VALUE_TYPE_INST",
+        "value": "67f6af9b-f753-11cf-9d89-0080c72e70a3",
+        "description": "Instantaneous. (depricated - use VAL instead)"
+      },
+      "Phase Angle": {
+        "name": "Phase Angle",
+        "standardName": "ID_SERIES_VALUE_TYPE_PHASEANGLE",
+        "value": "3d786f9d-f76e-11cf-9d89-0080c72e70a3",
+        "description": "Phase angle (used for a _VAL series or when it applies to all)."
+      },
+      "Phase Angle Mininum": {
+        "name": "Phase Angle Mininum",
+        "standardName": "ID_SERIES_VALUE_TYPE_PHASEANGLE_MIN",
+        "value": "dc762340-3c56-11d2-ae44-0060083a2628",
+        "description": "Phase angle which corresponds to a _MIN series (completing a complex pair)."
+      },
+      "Phase Angle Maximum": {
+        "name": "Phase Angle Maximum",
+        "standardName": "ID_SERIES_VALUE_TYPE_PHASEANGLE_MAX",
+        "value": "dc762341-3c56-11d2-ae44-0060083a2628",
+        "description": "Phase angle which corresponds to a _MAX series."
+      },
+      "Phase Angle Average": {
+        "name": "Phase Angle Average",
+        "standardName": "ID_SERIES_VALUE_TYPE_PHASEANGLE_AVG",
+        "value": "dc762342-3c56-11d2-ae44-0060083a2628",
+        "description": "Phase angle which corresponds to an _AVG series."
+      },
+      "Area": {
+        "name": "Area",
+        "standardName": "ID_SERIES_VALUE_TYPE_AREA",
+        "value": "c7825ce0-8ace-11d3-b92f-0050da2b1f4d",
+        "description": "Area under the signal, usually an rms voltage, current or other quantity."
+      },
+      "Latitude": {
+        "name": "Latitude",
+        "standardName": "ID_SERIES_VALUE_TYPE_LATITUDE",
+        "value": "c690e864-f755-11cf-9d89-0080c72e70a3",
+        "description": "Latitude."
+      },
+      "Duration": {
+        "name": "Duration",
+        "standardName": "ID_SERIES_VALUE_TYPE_DURATION",
+        "value": "c690e863-f755-11cf-9d89-0080c72e70a3",
+        "description": "Duration."
+      },
+      "Longitude": {
+        "name": "Longitude",
+        "standardName": "ID_SERIES_VALUE_TYPE_LONGITUDE",
+        "value": "c690e865-f755-11cf-9d89-0080c72e70a3",
+        "description": "Longitude."
+      },
+      "Polarity": {
+        "name": "Polarity",
+        "standardName": "ID_SERIES_VALUE_TYPE_POLARITY",
+        "value": "c690e866-f755-11cf-9d89-0080c72e70a3",
+        "description": "Polarity."
+      },
+      "Ellipse": {
+        "name": "Ellipse",
+        "standardName": "ID_SERIES_VALUE_TYPE_ELLIPSE",
+        "value": "c690e867-f755-11cf-9d89-0080c72e70a3",
+        "description": "Ellipse (for lightning flash density)."
+      },
+      "Bin ID": {
+        "name": "Bin ID",
+        "standardName": "ID_SERIES_VALUE_TYPE_BINID",
+        "value": "c690e869-f755-11cf-9d89-0080c72e70a3",
+        "description": "Bin ID"
+      },
+      "Bin High": {
+        "name": "Bin High",
+        "standardName": "ID_SERIES_VALUE_TYPE_BINHIGH",
+        "value": "c690e86a-f755-11cf-9d89-0080c72e70a3",
+        "description": "Bin High"
+      },
+      "Bin Low": {
+        "name": "Bin Low",
+        "standardName": "ID_SERIES_VALUE_TYPE_BINLOW",
+        "value": "c690e86b-f755-11cf-9d89-0080c72e70a3",
+        "description": "Bin Low"
+      },
+      "X Bin High": {
+        "name": "X Bin High",
+        "standardName": "ID_SERIES_VALUE_TYPE_XBINHIGH",
+        "value": "c690e86c-f755-11cf-9d89-0080c72e70a3",
+        "description": "X Bin High"
+      },
+      "X Bin Low": {
+        "name": "X Bin Low",
+        "standardName": "ID_SERIES_VALUE_TYPE_XBINLOW",
+        "value": "c690e86d-f755-11cf-9d89-0080c72e70a3",
+        "description": "X Bin Low"
+      },
+      "Y Bin High": {
+        "name": "Y Bin High",
+        "standardName": "ID_SERIES_VALUE_TYPE_YBINHIGH",
+        "value": "c690e86e-f755-11cf-9d89-0080c72e70a3",
+        "description": "Y Bin High"
+      },
+      "Y Bin Low": {
+        "name": "Y Bin Low",
+        "standardName": "ID_SERIES_VALUE_TYPE_YBINLOW",
+        "value": "c690e86f-f755-11cf-9d89-0080c72e70a3",
+        "description": "Y Bin Low"
+      },
+      "Count": {
+        "name": "Count",
+        "standardName": "ID_SERIES_VALUE_TYPE_COUNT",
+        "value": "c690e870-f755-11cf-9d89-0080c72e70a3",
+        "description": "Count"
+      },
+      "Transition": {
+        "name": "Transition",
+        "standardName": "ID_SERIES_VALUE_TYPE_TRANSITION",
+        "value": "5369c260-c347-11d2-923f-00104b2b84b1",
+        "description": "Transition event code series.  This series contains codes cooresponding to values in a value series that indicates what kind of transition caused the event to be recorded.  Used only with VALUELOG data."
+      },
+      "Probability": {
+        "name": "Probability",
+        "standardName": "ID_SERIES_VALUE_TYPE_PROB",
+        "value": "6763cc71-17d6-11d4-9f1c-002078e0b723",
+        "description": "Cumulative probability in percent."
+      },
+      "Interval": {
+        "name": "Interval",
+        "standardName": "ID_SERIES_VALUE_TYPE_INTERVAL",
+        "value": "72e82a40-336c-11d5-a4b3-444553540000",
+        "description": "Interval data"
+      },
+      "Status": {
+        "name": "Status",
+        "standardName": "ID_SERIES_VALUE_TYPE_STATUS",
+        "value": "b82b5c82-55c7-11d5-a4b3-444553540000",
+        "description": "Status Data"
+      },
+      "Probability: 1%": {
+        "name": "Probability: 1%",
+        "standardName": "ID_SERIES_VALUE_TYPE_P1",
+        "value": "67f6af9c-f753-11cf-9d89-0080c72e70a3",
+        "description": "Probability: 1%. This has been deprecated under 1.5 and should not be used."
+      },
+      "Probability: 5%": {
+        "name": "Probability: 5%",
+        "standardName": "ID_SERIES_VALUE_TYPE_P5",
+        "value": "67f6af9d-f753-11cf-9d89-0080c72e70a3",
+        "description": "Probability: 5%. This has been deprecated under 1.5 and should not be used."
+      },
+      "Probability: 10%": {
+        "name": "Probability: 10%",
+        "standardName": "ID_SERIES_VALUE_TYPE_P10",
+        "value": "67f6af9e-f753-11cf-9d89-0080c72e70a3",
+        "description": "Probability: 10%. This has been deprecated under 1.5 and should not be used."
+      },
+      "Probability: 90%": {
+        "name": "Probability: 90%",
+        "standardName": "ID_SERIES_VALUE_TYPE_P90",
+        "value": "67f6af9f-f753-11cf-9d89-0080c72e70a3",
+        "description": "Probability: 90%. This has been deprecated under 1.5 and should not be used."
+      },
+      "Probability: 95%": {
+        "name": "Probability: 95%",
+        "standardName": "ID_SERIES_VALUE_TYPE_P95",
+        "value": "c690e860-f755-11cf-9d89-0080c72e70a3",
+        "description": "Probability: 95%. This has been deprecated under 1.5 and should not be used."
+      },
+      "Probability: 99%": {
+        "name": "Probability: 99%",
+        "standardName": "ID_SERIES_VALUE_TYPE_P99",
+        "value": "c690e861-f755-11cf-9d89-0080c72e70a3",
+        "description": "Probability: 99%. This has been deprecated under 1.5 and should not be used."
+      },
+      "Frequency": {
+        "name": "Frequency",
+        "standardName": "ID_SERIES_VALUE_TYPE_FREQUENCY",
+        "value": "c690e868-f755-11cf-9d89-0080c72e70a3",
+        "description": "Frequency. This has been deprecated under 1.5 and should not be used. (It is now a characteristic instead of a value type.)"
+      }
+    },
+    "tagStorageMethodID": {
+      "Values": {
+        "name": "Values",
+        "standardName": "ID_SERIES_METHOD_VALUES",
+        "value": "0x01",
+        "description": "The data in tagSeriesValues are a straight array of data points."
+      },
+      "Scaled": {
+        "name": "Scaled",
+        "standardName": "ID_SERIES_METHOD_SCALED",
+        "value": "0x02",
+        "description": "All values in tagSeriesValues will be multiplied by tagSeriesScale."
+      },
+      "Increment": {
+        "name": "Increment",
+        "standardName": "ID_SERIES_METHOD_INCREMENT",
+        "value": "0x04",
+        "description": "The data in tagSeriesValues consists of a special sequence to indicate the contents of a regular rate series (see main documentation for details). The vector contains: #rates, numpts1, rate1 ... numptsN, rateN."
+      }
+    },
+    "tagHintGreekPrefixID": {
+      "ID_GREEK_DONTCARE": {
+        "name": "ID_GREEK_DONTCARE",
+        "standardName": "ID_GREEK_DONTCARE",
+        "value": "0",
+        "description": "ID_GREEK_DONTCARE"
+      },
+      "ID_GREEK_FEMTO": {
+        "name": "ID_GREEK_FEMTO",
+        "standardName": "ID_GREEK_FEMTO",
+        "value": "1",
+        "description": "ID_GREEK_FEMTO"
+      },
+      "ID_GREEK_PICO": {
+        "name": "ID_GREEK_PICO",
+        "standardName": "ID_GREEK_PICO",
+        "value": "2",
+        "description": "ID_GREEK_PICO"
+      },
+      "ID_GREEK_NANO": {
+        "name": "ID_GREEK_NANO",
+        "standardName": "ID_GREEK_NANO",
+        "value": "3",
+        "description": "ID_GREEK_NANO"
+      },
+      "ID_GREEK_MICRO": {
+        "name": "ID_GREEK_MICRO",
+        "standardName": "ID_GREEK_MICRO",
+        "value": "4",
+        "description": "ID_GREEK_MICRO"
+      },
+      "ID_GREEK_MILLI": {
+        "name": "ID_GREEK_MILLI",
+        "standardName": "ID_GREEK_MILLI",
+        "value": "5",
+        "description": "ID_GREEK_MILLI"
+      },
+      "ID_GREEK_NONE": {
+        "name": "ID_GREEK_NONE",
+        "standardName": "ID_GREEK_NONE",
+        "value": "6",
+        "description": "ID_GREEK_NONE"
+      },
+      "ID_GREEK_KILO": {
+        "name": "ID_GREEK_KILO",
+        "standardName": "ID_GREEK_KILO",
+        "value": "7",
+        "description": "ID_GREEK_KILO"
+      },
+      "ID_GREEK_MEGA": {
+        "name": "ID_GREEK_MEGA",
+        "standardName": "ID_GREEK_MEGA",
+        "value": "8",
+        "description": "ID_GREEK_MEGA"
+      },
+      "ID_GREEK_TERA": {
+        "name": "ID_GREEK_TERA",
+        "standardName": "ID_GREEK_TERA",
+        "value": "10",
+        "description": "ID_GREEK_TERA"
+      },
+      "ID_GREEK_GIGA": {
+        "name": "ID_GREEK_GIGA",
+        "standardName": "ID_GREEK_GIGA",
+        "value": "9",
+        "description": "ID_GREEK_GIGA"
+      }
+    },
+    "tagHintPreferredUnitsID": {
+      "ID_PREFER_ENG": {
+        "name": "ID_PREFER_ENG",
+        "standardName": "ID_PREFER_ENG",
+        "value": "1",
+        "description": "ID_PREFER_ENG"
+      },
+      "ID_PREFER_PCT": {
+        "name": "ID_PREFER_PCT",
+        "standardName": "ID_PREFER_PCT",
+        "value": "2",
+        "description": "ID_PREFER_PCT"
+      },
+      "ID_PREFER_PU": {
+        "name": "ID_PREFER_PU",
+        "standardName": "ID_PREFER_PU",
+        "value": "3",
+        "description": "ID_PREFER_PU"
+      }
+    },
+    "tagHintDefaultDisplayID": {
+      "ID_DEFAULT_DONTCARE": {
+        "name": "ID_DEFAULT_DONTCARE",
+        "standardName": "ID_DEFAULT_DONTCARE",
+        "value": "0",
+        "description": "ID_DEFAULT_DONTCARE"
+      },
+      "ID_DEFAULT_MAG": {
+        "name": "ID_DEFAULT_MAG",
+        "standardName": "ID_DEFAULT_MAG",
+        "value": "1",
+        "description": "ID_DEFAULT_MAG"
+      },
+      "ID_DEFAULT_ANG": {
+        "name": "ID_DEFAULT_ANG",
+        "standardName": "ID_DEFAULT_ANG",
+        "value": "2",
+        "description": "ID_DEFAULT_ANG"
+      },
+      "ID_DEFAULT_REAL": {
+        "name": "ID_DEFAULT_REAL",
+        "standardName": "ID_DEFAULT_REAL",
+        "value": "3",
+        "description": "ID_DEFAULT_REAL"
+      },
+      "ID_DEFAULT_IMAG": {
+        "name": "ID_DEFAULT_IMAG",
+        "standardName": "ID_DEFAULT_IMAG",
+        "value": "4",
+        "description": "ID_DEFAULT_IMAG"
+      },
+      "ID_DEFAULT_RX": {
+        "name": "ID_DEFAULT_RX",
+        "standardName": "ID_DEFAULT_RX",
+        "value": "5",
+        "description": "ID_DEFAULT_RX"
+      }
+    },
+    "tagTriggerTypeID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_TRIG_NONE",
+        "value": "0x00",
+        "description": "No trigger"
+      },
+      "Low": {
+        "name": "Low",
+        "standardName": "ID_TRIG_LOW",
+        "value": "0x01",
+        "description": "Trigger when the value is too low"
+      },
+      "High": {
+        "name": "High",
+        "standardName": "ID_TRIG_HIGH",
+        "value": "0x02",
+        "description": "Trigger when the value is too high"
+      },
+      "Rate": {
+        "name": "Rate",
+        "standardName": "ID_TRIG_RATE",
+        "value": "0x04",
+        "description": "Rate trigger"
+      },
+      "Shape": {
+        "name": "Shape",
+        "standardName": "ID_TRIG_SHAPE",
+        "value": "0x08",
+        "description": "Shape trigger"
+      },
+      "Other": {
+        "name": "Other",
+        "standardName": "ID_TRIG_OTHER",
+        "value": "0x10",
+        "description": "Trigger that cannot otherwise be categorized"
+      }
+    },
+    "tagXDTransformerTypeID": {
+      "ID_XFORMER_TYPE_CT": {
+        "name": "ID_XFORMER_TYPE_CT",
+        "standardName": "ID_XFORMER_TYPE_CT",
+        "value": "2",
+        "description": "ID_XFORMER_TYPE_CT"
+      },
+      "ID_XFORMER_TYPE_PT": {
+        "name": "ID_XFORMER_TYPE_PT",
+        "standardName": "ID_XFORMER_TYPE_PT",
+        "value": "1",
+        "description": "ID_XFORMER_TYPE_PT"
+      }
+    },
+    "tagTriggerMethodID": {
+      "ID_TRIGGER_METH_NONE": {
+        "name": "ID_TRIGGER_METH_NONE",
+        "standardName": "ID_TRIGGER_METH_NONE",
+        "value": "0",
+        "description": "ID_TRIGGER_METH_NONE"
+      },
+      "ID_TRIGGER_METH_CHANNEL": {
+        "name": "ID_TRIGGER_METH_CHANNEL",
+        "standardName": "ID_TRIGGER_METH_CHANNEL",
+        "value": "1",
+        "description": "A specific channel (or channels) caused the trigger; should be used with tagChannelTriggerIdx to specify which channels."
+      },
+      "ID_TRIGGER_METH_PERIODIC": {
+        "name": "ID_TRIGGER_METH_PERIODIC",
+        "standardName": "ID_TRIGGER_METH_PERIODIC",
+        "value": "2",
+        "description": "ID_TRIGGER_METH_PERIODIC"
+      },
+      "ID_TRIGGER_METH_EXTERNAL": {
+        "name": "ID_TRIGGER_METH_EXTERNAL",
+        "standardName": "ID_TRIGGER_METH_EXTERNAL",
+        "value": "3",
+        "description": "ID_TRIGGER_METH_EXTERNAL"
+      },
+      "ID_TRIGGER_METH_PERIODIC_STATS": {
+        "name": "ID_TRIGGER_METH_PERIODIC_STATS",
+        "standardName": "ID_TRIGGER_METH_PERIODIC_STATS",
+        "value": "4",
+        "description": "Periodic Statistical Data"
+      }
+    },
+    "tagQuantityCharacteristicID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_QC_NONE",
+        "value": "a6b31adf-b451-11d1-ae17-0060083a2628",
+        "description": "None"
+      },
+      "Instantaneous": {
+        "name": "Instantaneous",
+        "standardName": "ID_QC_INSTANTANEOUS",
+        "value": "a6b31add-b451-11d1-ae17-0060083a2628",
+        "description": "Instantaneous f(t)"
+      },
+      "Spectra": {
+        "name": "Spectra",
+        "standardName": "ID_QC_SPECTRA",
+        "value": "a6b31ae9-b451-11d1-ae17-0060083a2628",
+        "description": "Spectra F(F)"
+      },
+      "Peak": {
+        "name": "Peak",
+        "standardName": "ID_QC_PEAK",
+        "value": "a6b31ae2-b451-11d1-ae17-0060083a2628",
+        "description": "Peak value"
+      },
+      "RMS": {
+        "name": "RMS",
+        "standardName": "ID_QC_RMS",
+        "value": "a6b31ae5-b451-11d1-ae17-0060083a2628",
+        "description": "RMS value"
+      },
+      "HRMS": {
+        "name": "HRMS",
+        "standardName": "ID_QC_HRMS",
+        "value": "a6b31adc-b451-11d1-ae17-0060083a2628",
+        "description": "Harmonic RMS"
+      },
+      "Frequency": {
+        "name": "Frequency",
+        "standardName": "ID_QC_FREQUENCY",
+        "value": "07ef68af-9ff5-11d2-b30b-006008b37183",
+        "description": "Frequency"
+      },
+      "TotalTHD": {
+        "name": "TotalTHD",
+        "standardName": "ID_QC_TOTAL_THD",
+        "value": "a6b31aec-b451-11d1-ae17-0060083a2628",
+        "description": "Total harmonic distortion (%)"
+      },
+      "EvenTHD": {
+        "name": "EvenTHD",
+        "standardName": "ID_QC_EVEN_THD",
+        "value": "a6b31ad4-b451-11d1-ae17-0060083a2628",
+        "description": "Even harmonic distortion (%)"
+      },
+      "OddTHD": {
+        "name": "OddTHD",
+        "standardName": "ID_QC_ODD_THD",
+        "value": "a6b31ae0-b451-11d1-ae17-0060083a2628",
+        "description": "Odd harmonic distortion (%)"
+      },
+      "CrestFactor": {
+        "name": "CrestFactor",
+        "standardName": "ID_QC_CREST_FACTOR",
+        "value": "a6b31ad2-b451-11d1-ae17-0060083a2628",
+        "description": "Crest factor"
+      },
+      "FormFactor": {
+        "name": "FormFactor",
+        "standardName": "ID_QC_FORM_FACTOR",
+        "value": "a6b31adb-b451-11d1-ae17-0060083a2628",
+        "description": "Form factor"
+      },
+      "ArithSum": {
+        "name": "ArithSum",
+        "standardName": "ID_QC_ARITH_SUM",
+        "value": "a6b31ad0-b451-11d1-ae17-0060083a2628",
+        "description": "Arithmetic sum"
+      },
+      "S0S1": {
+        "name": "S0S1",
+        "standardName": "ID_QC_S0S1",
+        "value": "a6b31ae7-b451-11d1-ae17-0060083a2628",
+        "description": "Zero sequence component unbalance (%)"
+      },
+      "S2S1": {
+        "name": "S2S1",
+        "standardName": "ID_QC_S2S1",
+        "value": "a6b31ae8-b451-11d1-ae17-0060083a2628",
+        "description": "Negative sequence component unbalance (%)"
+      },
+      "SPos": {
+        "name": "SPos",
+        "standardName": "ID_QC_SPOS",
+        "value": "a6b31aea-b451-11d1-ae17-0060083a2628",
+        "description": "Positive sequence component"
+      },
+      "SNeg": {
+        "name": "SNeg",
+        "standardName": "ID_QC_SNEG",
+        "value": "d71a4b91-3c92-11d4-9f2c-002078e0b723",
+        "description": "Negative sequence component"
+      },
+      "SZero": {
+        "name": "SZero",
+        "standardName": "ID_QC_SZERO",
+        "value": "d71a4b92-3c92-11d4-9f2c-002078e0b723",
+        "description": "Zero sequence component"
+      },
+      "AvgImbal": {
+        "name": "AvgImbal",
+        "standardName": "ID_QC_AVG_IMBAL",
+        "value": "a6b31ad1-b451-11d1-ae17-0060083a2628",
+        "description": "Imbalance by max deviation from average"
+      },
+      "TotalTHDRMS": {
+        "name": "TotalTHDRMS",
+        "standardName": "ID_QC_TOTAL_THD_RMS",
+        "value": "f3d216e0-2aa5-11d5-a4b3-444553540000",
+        "description": "Total THD normalized to RMS"
+      },
+      "OddTHDRMS": {
+        "name": "OddTHDRMS",
+        "standardName": "ID_QC_ODD_THD_RMS",
+        "value": "f3d216e1-2aa5-11d5-a4b3-444553540000",
+        "description": "Odd THD normalized to RMS"
+      },
+      "EvenTHDRMS": {
+        "name": "EvenTHDRMS",
+        "standardName": "ID_QC_EVEN_THD_RMS",
+        "value": "f3d216e2-2aa5-11d5-a4b3-444553540000",
+        "description": "Even THD normalized to RMS"
+      },
+      "TID": {
+        "name": "TID",
+        "standardName": "ID_QC_TID",
+        "value": "f3d216e3-2aa5-11d5-a4b3-444553540000",
+        "description": "Total Interharmonic Distortion"
+      },
+      "TIDRMS": {
+        "name": "TIDRMS",
+        "standardName": "ID_QC_TID_RMS",
+        "value": "f3d216e4-2aa5-11d5-a4b3-444553540000",
+        "description": "Total Interharmonic Distortion Normalized to RMS"
+      },
+      "IHRMS": {
+        "name": "IHRMS",
+        "standardName": "ID_QC_IHRMS",
+        "value": "f3d216e5-2aa5-11d5-a4b3-444553540000",
+        "description": "Interharmonic RMS"
+      },
+      "SpectraHGroup": {
+        "name": "SpectraHGroup",
+        "standardName": "ID_QC_SPECTRA_HGROUP",
+        "value": "53be6ba8-0789-455b-9a95-da128683dda7",
+        "description": "Spectra by Harmonic Group index"
+      },
+      "SpectraIGroup": {
+        "name": "SpectraIGroup",
+        "standardName": "ID_QC_SPECTRA_IGROUP",
+        "value": "5e51e006-9c95-4c5e-878f-7ca87c0d2a0e",
+        "description": "Spectra by Interharmonic Group Index"
+      },
+      "TIF": {
+        "name": "TIF",
+        "standardName": "ID_QC_TIF",
+        "value": "a6b31aeb-b451-11d1-ae17-0060083a2628",
+        "description": "TIF"
+      },
+      "FlkrMagAvg": {
+        "name": "FlkrMagAvg",
+        "standardName": "ID_QC_FLKR_MAG_AVG",
+        "value": "a6b31ad6-b451-11d1-ae17-0060083a2628",
+        "description": "Flicker average RMS value"
+      },
+      "FlkrMaxDVV": {
+        "name": "FlkrMaxDVV",
+        "standardName": "ID_QC_FLKR_MAX_DVV",
+        "value": "a6b31ad8-b451-11d1-ae17-0060083a2628",
+        "description": "dV/V base"
+      },
+      "FlkrFreqMax": {
+        "name": "FlkrFreqMax",
+        "standardName": "ID_QC_FLKR_FREQ_MAX",
+        "value": "a6b31ad5-b451-11d1-ae17-0060083a2628",
+        "description": "Frequence of maximum flicker harmonic"
+      },
+      "FlkrMagMax": {
+        "name": "FlkrMagMax",
+        "standardName": "ID_QC_FLKR_MAG_MAX",
+        "value": "a6b31ad7-b451-11d1-ae17-0060083a2628",
+        "description": "Magnitude of maximum flicker harmonic"
+      },
+      "FlkrWgtAvg": {
+        "name": "FlkrWgtAvg",
+        "standardName": "ID_QC_FLKR_WGT_AVG",
+        "value": "a6b31ada-b451-11d1-ae17-0060083a2628",
+        "description": "Spectrum weighted average"
+      },
+      "FlkrSpectrum": {
+        "name": "FlkrSpectrum",
+        "standardName": "ID_QC_FLKR_SPECTRUM",
+        "value": "a6b31ad9-b451-11d1-ae17-0060083a2628",
+        "description": "Flicker spectrum VRMS(F)"
+      },
+      "FlkrPST": {
+        "name": "FlkrPST",
+        "standardName": "ID_QC_FLKR_PST",
+        "value": "515bf320-71ca-11d4-a4b3-444553540000",
+        "description": "Short Term Flicker"
+      },
+      "FlkrPLT": {
+        "name": "FlkrPLT",
+        "standardName": "ID_QC_FLKR_PLT",
+        "value": "515bf321-71ca-11d4-a4b3-444553540000",
+        "description": "Long Term Flicker"
+      },
+      "TIFRMS": {
+        "name": "TIFRMS",
+        "standardName": "ID_QC_TIF_RMS",
+        "value": "f3d216e6-2aa5-11d5-a4b3-444553540000",
+        "description": "TIF normalized to RMS"
+      },
+      "PLTSlide": {
+        "name": "PLTSlide",
+        "standardName": "ID_QC_FLKR_PLTSLIDE",
+        "value": "2257ec05-06ea-4709-b43a-0c00534d554a",
+        "description": "Sliding PLT"
+      },
+      "PiLPF": {
+        "name": "PiLPF",
+        "standardName": "ID_QC_FLKR_PILPF",
+        "value": "4d693eec-5d1d-4531-993a-793b5356c63d",
+        "description": "Pi LPF"
+      },
+      "PiMax": {
+        "name": "PiMax",
+        "standardName": "ID_QC_FLKR_PIMAX",
+        "value": "126de61c-6691-4d16-8fdf-46482bca4694",
+        "description": "Pi max"
+      },
+      "PiRoot": {
+        "name": "PiRoot",
+        "standardName": "ID_QC_FLKR_PIROOT",
+        "value": "e065b621-ffdb-4598-9330-4d09353988b6",
+        "description": "Pi root"
+      },
+      "PiRootLPF": {
+        "name": "PiRootLPF",
+        "standardName": "ID_QC_FLKR_PIROOTLPF",
+        "value": "7d11f283-1ce7-4e58-8af0-79048793b8a7",
+        "description": "Pi root LPF"
+      },
+      "IT": {
+        "name": "IT",
+        "standardName": "ID_QC_IT",
+        "value": "a6b31ade-b451-11d1-ae17-0060083a2628",
+        "description": "IT"
+      },
+      "RMSDemand": {
+        "name": "RMSDemand",
+        "standardName": "ID_QC_RMS_DEMAND",
+        "value": "07ef68a0-9ff5-11d2-b30b-006008b37183",
+        "description": "RMS value of current for a demand interval"
+      },
+      "ANSITDF": {
+        "name": "ANSITDF",
+        "standardName": "ID_QC_ANSI_TDF",
+        "value": "8786ca10-9113-11d3-b930-0050da2b1f4d",
+        "description": "Transformer Derating Factor"
+      },
+      "KFactor": {
+        "name": "KFactor",
+        "standardName": "ID_QC_K_FACTOR",
+        "value": "8786ca11-9113-11d3-b930-0050da2b1f4d",
+        "description": "Transformer K Factor"
+      },
+      "TDD": {
+        "name": "TDD",
+        "standardName": "ID_QC_TDD",
+        "value": "f3d216e7-2aa5-11d5-a4b3-444553540000",
+        "description": "Total Demand Distortion"
+      },
+      "RMSPeakDemand": {
+        "name": "RMSPeakDemand",
+        "standardName": "ID_QC_RMS_PEAK_DEMAND",
+        "value": "72e82a44-336c-11d5-a4b3-444553540000",
+        "description": "Peak Demand Current"
+      },
+      "P": {
+        "name": "P",
+        "standardName": "ID_QC_P",
+        "value": "a6b31ae1-b451-11d1-ae17-0060083a2628",
+        "description": "Real power (watts)"
+      },
+      "Q": {
+        "name": "Q",
+        "standardName": "ID_QC_Q",
+        "value": "a6b31ae4-b451-11d1-ae17-0060083a2628",
+        "description": "Reactive power (VAR)"
+      },
+      "S": {
+        "name": "S",
+        "standardName": "ID_QC_S",
+        "value": "a6b31ae6-b451-11d1-ae17-0060083a2628",
+        "description": "Apparent power (VA)"
+      },
+      "PF": {
+        "name": "PF",
+        "standardName": "ID_QC_PF",
+        "value": "a6b31ae3-b451-11d1-ae17-0060083a2628",
+        "description": "True Power Factor - (Vrms * Irms) / P."
+      },
+      "DF": {
+        "name": "DF",
+        "standardName": "ID_QC_DF",
+        "value": "a6b31ad3-b451-11d1-ae17-0060083a2628",
+        "description": "Displacement Factor - Cosine of the phase angle between fundamental frequency voltage and current phasors."
+      },
+      "PDemand": {
+        "name": "PDemand",
+        "standardName": "ID_QC_P_DEMAND",
+        "value": "07ef68a1-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of active power for a demand interval"
+      },
+      "QDemand": {
+        "name": "QDemand",
+        "standardName": "ID_QC_Q_DEMAND",
+        "value": "07ef68a2-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of reactive power for a demand interval"
+      },
+      "SDemand": {
+        "name": "SDemand",
+        "standardName": "ID_QC_S_DEMAND",
+        "value": "07ef68a3-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of apparent power for a demand interval"
+      },
+      "DFDemand": {
+        "name": "DFDemand",
+        "standardName": "ID_QC_DF_DEMAND",
+        "value": "07ef68a4-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of displacement power factor for a demand interval"
+      },
+      "PFDemand": {
+        "name": "PFDemand",
+        "standardName": "ID_QC_PF_DEMAND",
+        "value": "07ef68a5-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of true power factor for a demand interval"
+      },
+      "PPredDemand": {
+        "name": "PPredDemand",
+        "standardName": "ID_QC_P_PRED_DEMAND",
+        "value": "672d0305-7810-11d4-a4b3-444553540000",
+        "description": "Predicted value of active power for current demand interval"
+      },
+      "QPredDemand": {
+        "name": "QPredDemand",
+        "standardName": "ID_QC_Q_PRED_DEMAND",
+        "value": "672d0306-7810-11d4-a4b3-444553540000",
+        "description": "Predicted value of reactive power for current demand interval"
+      },
+      "SPredDemand": {
+        "name": "SPredDemand",
+        "standardName": "ID_QC_S_PRED_DEMAND",
+        "value": "672d0307-7810-11d4-a4b3-444553540000",
+        "description": "Pedicted value of apparent power for current demand interval"
+      },
+      "PCoQDemand": {
+        "name": "PCoQDemand",
+        "standardName": "ID_QC_P_CO_Q_DEMAND",
+        "value": "672d030a-7810-11d4-a4b3-444553540000",
+        "description": "Value of active power coincident with reactive power demand"
+      },
+      "PCoSDemand": {
+        "name": "PCoSDemand",
+        "standardName": "ID_QC_P_CO_S_DEMAND",
+        "value": "672d030b-7810-11d4-a4b3-444553540000",
+        "description": "Value of active power coincident with apparent power demand"
+      },
+      "QCoPDemand": {
+        "name": "QCoPDemand",
+        "standardName": "ID_QC_Q_CO_P_DEMAND",
+        "value": "672d030d-7810-11d4-a4b3-444553540000",
+        "description": "Value of reative power coincident with active power demand"
+      },
+      "QCoSDemand": {
+        "name": "QCoSDemand",
+        "standardName": "ID_QC_Q_CO_S_DEMAND",
+        "value": "672d030e-7810-11d4-a4b3-444553540000",
+        "description": "Value of reactive power coincident with apparent power demand"
+      },
+      "DFCoSDemand": {
+        "name": "DFCoSDemand",
+        "standardName": "ID_QC_DF_CO_S_DEMAND",
+        "value": "07ef68ad-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of displacement power factor coincident with apparent power demand"
+      },
+      "PFCoSDemand": {
+        "name": "PFCoSDemand",
+        "standardName": "ID_QC_PF_CO_S_DEMAND",
+        "value": "07ef68ae-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of true power factor coincident with apparent power demand"
+      },
+      "PFCoPDemand": {
+        "name": "PFCoPDemand",
+        "standardName": "ID_QC_PF_CO_P_DEMAND",
+        "value": "672d0308-7810-11d4-a4b3-444553540000",
+        "description": "Value of true power factor coincident with active power demand"
+      },
+      "PFCoQDemand": {
+        "name": "PFCoQDemand",
+        "standardName": "ID_QC_PF_CO_Q_DEMAND",
+        "value": "672d0309-7810-11d4-a4b3-444553540000",
+        "description": "Value of true power factor coincident with reactive power demand"
+      },
+      "AngleFund": {
+        "name": "AngleFund",
+        "standardName": "ID_QC_ANGLE_FUND",
+        "value": "672d030f-7810-11d4-a4b3-444553540000",
+        "description": "Value of the power angle at fundamental"
+      },
+      "QFund": {
+        "name": "QFund",
+        "standardName": "ID_QC_Q_FUND",
+        "value": "672d0310-7810-11d4-a4b3-444553540000",
+        "description": "Value of the reactive power at fundamental frequency"
+      },
+      "PFVector": {
+        "name": "PFVector",
+        "standardName": "ID_QC_PF_VECTOR",
+        "value": "672d0311-7810-11d4-a4b3-444553540000",
+        "description": "True Power Factor - IEEE vector calculations"
+      },
+      "DFVector": {
+        "name": "DFVector",
+        "standardName": "ID_QC_DF_VECTOR",
+        "value": "672d0312-7810-11d4-a4b3-444553540000",
+        "description": "Displacement Factor - IEEE vector calculations"
+      },
+      "SVector": {
+        "name": "SVector",
+        "standardName": "ID_QC_S_VECTOR",
+        "value": "672d0314-7810-11d4-a4b3-444553540000",
+        "description": "Value of apparent power - IEEE vector calculations"
+      },
+      "SVectorFund": {
+        "name": "SVectorFund",
+        "standardName": "ID_QC_S_VECTOR_FUND",
+        "value": "672d0315-7810-11d4-a4b3-444553540000",
+        "description": "Value of fundamental frequency apparent power - IEEE vector calculations"
+      },
+      "SFund": {
+        "name": "SFund",
+        "standardName": "ID_QC_S_FUND",
+        "value": "672d0316-7810-11d4-a4b3-444553540000",
+        "description": "Value of fundamental frequency apparent power"
+      },
+      "SCoPDemand": {
+        "name": "SCoPDemand",
+        "standardName": "ID_QC_S_CO_P_DEMAND",
+        "value": "672d0317-7810-11d4-a4b3-444553540000",
+        "description": "Apparent power coincident with active power demand"
+      },
+      "SCoQDemand": {
+        "name": "SCoQDemand",
+        "standardName": "ID_QC_S_CO_Q_DEMAND",
+        "value": "672d0318-7810-11d4-a4b3-444553540000",
+        "description": "Apparent power coincident with reactive power demand"
+      },
+      "PFArith": {
+        "name": "PFArith",
+        "standardName": "ID_QC_PF_ARITH",
+        "value": "1c39fb00-a6aa-11d4-a4b3-444553540000",
+        "description": "True Power Factor - IEEE arithmetic calculations"
+      },
+      "DFArith": {
+        "name": "DFArith",
+        "standardName": "ID_QC_DF_ARITH",
+        "value": "1c39fb01-a6aa-11d4-a4b3-444553540000",
+        "description": "Displacement Factor - IEEE Arithmetic calculations"
+      },
+      "SArith": {
+        "name": "SArith",
+        "standardName": "ID_QC_S_ARITH",
+        "value": "1c39fb02-a6aa-11d4-a4b3-444553540000",
+        "description": "Value of apparent power - IEEE Arithmetic calculations"
+      },
+      "SArithFund": {
+        "name": "SArithFund",
+        "standardName": "ID_QC_S_ARITH_FUND",
+        "value": "1c39fb03-a6aa-11d4-a4b3-444553540000",
+        "description": "Value of fundamental frequency apparent power - IEEE Arithmetic calculations"
+      },
+      "SPeakDemand": {
+        "name": "SPeakDemand",
+        "standardName": "ID_QC_S_PEAK_DEMAND",
+        "value": "72e82a43-336c-11d5-a4b3-444553540000",
+        "description": "Peak Apparent Power Demand"
+      },
+      "QPeakDemand": {
+        "name": "QPeakDemand",
+        "standardName": "ID_QC_Q_PEAK_DEMAND",
+        "value": "72e82a42-336c-11d5-a4b3-444553540000",
+        "description": "Peak Reactive Power Demand"
+      },
+      "PPeakDemand": {
+        "name": "PPeakDemand",
+        "standardName": "ID_QC_P_PEAK_DEMAND",
+        "value": "72e82a41-336c-11d5-a4b3-444553540000",
+        "description": "Peak Active Power Demand"
+      },
+      "PHarmonic": {
+        "name": "PHarmonic",
+        "standardName": "ID_QC_P_HARMONIC",
+        "value": "b82b5c80-55c7-11d5-a4b3-444553540000",
+        "description": "Net Harmonic Actve Power"
+      },
+      "PHarmonicUnsigned": {
+        "name": "PHarmonicUnsigned",
+        "standardName": "ID_QC_P_HARMONIC_UNSIGNED",
+        "value": "b82b5c81-55c7-11d5-a4b3-444553540000",
+        "description": "Arithmetic sum Harmonic Actve Power"
+      },
+      "PFund": {
+        "name": "PFund",
+        "standardName": "ID_QC_P_FUND",
+        "value": "1cdda475-1ebb-42d8-8087-d01b0b5cfa97",
+        "description": "Value of fundamental frequency real power"
+      },
+      "PIntg": {
+        "name": "PIntg",
+        "standardName": "ID_QC_P_INTG",
+        "value": "07ef68a6-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of active power integrated over time (Energy - watt-hours)"
+      },
+      "PIntgPos": {
+        "name": "PIntgPos",
+        "standardName": "ID_QC_P_INTG_POS",
+        "value": "07ef68a7-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of active power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "PIntgPosFund": {
+        "name": "PIntgPosFund",
+        "standardName": "ID_QC_P_INTG_POS_FUND",
+        "value": "672d0300-7810-11d4-a4b3-444553540000",
+        "description": "Value of active fund. Freq. power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "PIntgNeg": {
+        "name": "PIntgNeg",
+        "standardName": "ID_QC_P_INTG_NEG",
+        "value": "07ef68a8-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of active power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "PIntgNegFund": {
+        "name": "PIntgNegFund",
+        "standardName": "ID_QC_P_INTG_NEG_FUND",
+        "value": "672d0301-7810-11d4-a4b3-444553540000",
+        "description": "Value of active fund. Freq.  power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "QIntg": {
+        "name": "QIntg",
+        "standardName": "ID_QC_Q_INTG",
+        "value": "07ef68a9-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of reactive power integrated over time (var-hours)"
+      },
+      "QIntgPos": {
+        "name": "QIntgPos",
+        "standardName": "ID_QC_Q_INTG_POS",
+        "value": "07ef68aa-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of reactive power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "QIntgPosFund": {
+        "name": "QIntgPosFund",
+        "standardName": "ID_QC_Q_INTG_POS_FUND",
+        "value": "672d0303-7810-11d4-a4b3-444553540000",
+        "description": "Value of fund. Freq. reactive power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "QIntgNegFund": {
+        "name": "QIntgNegFund",
+        "standardName": "ID_QC_Q_INTG_NEG_FUND",
+        "value": "672d0304-7810-11d4-a4b3-444553540000",
+        "description": "Value of fund. Freq. reactive power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "QIntgNeg": {
+        "name": "QIntgNeg",
+        "standardName": "ID_QC_Q_INTG_NEG",
+        "value": "07ef68ab-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of reactive power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "SIntg": {
+        "name": "SIntg",
+        "standardName": "ID_QC_S_INTG",
+        "value": "07ef68ac-9ff5-11d2-b30b-006008b37183",
+        "description": "Value of apparent power integrated over time (VA-hours)"
+      },
+      "SIntgFund": {
+        "name": "SIntgFund",
+        "standardName": "ID_QC_S_INTG_FUND",
+        "value": "672d0313-7810-11d4-a4b3-444553540000",
+        "description": "Value of fundamental frequency apparent power integrated over time (VA-hours)"
+      },
+      "PIVLIntg": {
+        "name": "PIVLIntg",
+        "standardName": "ID_QC_P_IVL_INTG",
+        "value": "f098a9a0-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of active power integrated over time (Energy - watt-hours)"
+      },
+      "PIVLIntgPos": {
+        "name": "PIVLIntgPos",
+        "standardName": "ID_QC_P_IVL_INTG_POS",
+        "value": "f098a9a1-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of active power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "PIVLIntgPosFund": {
+        "name": "PIVLIntgPosFund",
+        "standardName": "ID_QC_P_IVL_INTG_POS_FUND",
+        "value": "f098a9a2-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of active fund. Freq. power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "PIVLIntgNeg": {
+        "name": "PIVLIntgNeg",
+        "standardName": "ID_QC_P_IVL_INTG_NEG",
+        "value": "f098a9a3-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of active power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "PIVLIntgNegFund": {
+        "name": "PIVLIntgNegFund",
+        "standardName": "ID_QC_P_IVL_INTG_NEG_FUND",
+        "value": "f098a9a4-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of active fund. Freq.  power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "QIVLIntg": {
+        "name": "QIVLIntg",
+        "standardName": "ID_QC_Q_IVL_INTG",
+        "value": "f098a9a5-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of reactive power integrated over time (var-hours)"
+      },
+      "QIVLIntgPos": {
+        "name": "QIVLIntgPos",
+        "standardName": "ID_QC_Q_IVL_INTG_POS",
+        "value": "f098a9a6-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of reactive power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "QIVLIntgPosFund": {
+        "name": "QIVLIntgPosFund",
+        "standardName": "ID_QC_Q_IVL_INTG_POS_FUND",
+        "value": "f098a9a7-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of fund. Freq. reactive power integrated over time (Energy - watt-hours) in the positive direction (toward load)."
+      },
+      "QIVLIntgNegFund": {
+        "name": "QIVLIntgNegFund",
+        "standardName": "ID_QC_Q_IVL_INTG_NEG_FUND",
+        "value": "f098a9a8-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of fund. Freq. reactive power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "QIVLIntgNeg": {
+        "name": "QIVLIntgNeg",
+        "standardName": "ID_QC_Q_IVL_INTG_NEG",
+        "value": "f098a9a9-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of reactive power integrated over time (Energy - watt-hours) in the negative direction (away from load)."
+      },
+      "SIVLIntg": {
+        "name": "SIVLIntg",
+        "standardName": "ID_QC_S_IVL_INTG",
+        "value": "f098a9aa-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of apparent power integrated over time (VA-hours)"
+      },
+      "SIVLIntgFund": {
+        "name": "SIVLIntgFund",
+        "standardName": "ID_QC_S_IVL_INTG_FUND",
+        "value": "f098a9ab-3ee4-11d5-a4b3-444553540000",
+        "description": "Value of fundamental frequency apparent power integrated over time (VA-hours)"
+      },
+      "DAxisField": {
+        "name": "DAxisField",
+        "standardName": "ID_QC_DAXISFIELD",
+        "value": "d347ba65-e34c-11d4-82d9-00e09872a094",
+        "description": "D Axis Components"
+      },
+      "QAxis": {
+        "name": "QAxis",
+        "standardName": "ID_QC_QAXIS",
+        "value": "d347ba64-e34c-11d4-82d9-00e09872a094",
+        "description": "Q Axis Components"
+      },
+      "Rotational": {
+        "name": "Rotational",
+        "standardName": "ID_QC_ROTATIONAL",
+        "value": "d347ba62-e34c-11d4-82d9-00e09872a094",
+        "description": "Rotational Position"
+      },
+      "DAxis": {
+        "name": "DAxis",
+        "standardName": "ID_QC_DAXIS",
+        "value": "d347ba63-e34c-11d4-82d9-00e09872a094",
+        "description": "D Axis Components"
+      },
+      "Linear": {
+        "name": "Linear",
+        "standardName": "ID_QC_LINEAR",
+        "value": "d347ba61-e34c-11d4-82d9-00e09872a094",
+        "description": "Linear Position"
+      },
+      "TransferFunc": {
+        "name": "TransferFunc",
+        "standardName": "ID_QC_TRANSFERFUNC",
+        "value": "5202bd07-245c-11d5-a4b3-444553540000",
+        "description": "Transfer function"
+      },
+      "Status": {
+        "name": "Status",
+        "standardName": "ID_QC_STATUS",
+        "value": "b82b5c83-55c7-11d5-a4b3-444553540000",
+        "description": "Status Data"
+      }
+    },
+    "tagQuantityMeasuredID": {
+      "None": {
+        "name": "None",
+        "standardName": "ID_QM_NONE",
+        "value": "0",
+        "description": "None or not applicable."
+      },
+      "Voltage": {
+        "name": "Voltage",
+        "standardName": "ID_QM_VOLTAGE",
+        "value": "1",
+        "description": "Voltage."
+      },
+      "Current": {
+        "name": "Current",
+        "standardName": "ID_QM_CURRENT",
+        "value": "2",
+        "description": "Current."
+      },
+      "Power": {
+        "name": "Power",
+        "standardName": "ID_QM_POWER",
+        "value": "3",
+        "description": "Power - includes all data for a quantity or characteristic derived from multiplying voltage and current components."
+      },
+      "Energy": {
+        "name": "Energy",
+        "standardName": "ID_QM_ENERGY",
+        "value": "4",
+        "description": "Energy - includes all data from an integration of a quantity or characteristic derived from multiplying voltage and current components together."
+      },
+      "Temperature": {
+        "name": "Temperature",
+        "standardName": "ID_QM_TEMPERATURE",
+        "value": "5",
+        "description": "Temperature."
+      },
+      "Pressure": {
+        "name": "Pressure",
+        "standardName": "ID_QM_PRESSURE",
+        "value": "6",
+        "description": "Pressure."
+      },
+      "Charge": {
+        "name": "Charge",
+        "standardName": "ID_QM_CHARGE",
+        "value": "7",
+        "description": "Charge."
+      },
+      "ElectricalField": {
+        "name": "ElectricalField",
+        "standardName": "ID_QM_EFIELD",
+        "value": "8",
+        "description": "Electrical field."
+      },
+      "MagneticField": {
+        "name": "MagneticField",
+        "standardName": "ID_QM_MFIELD",
+        "value": "9",
+        "description": "Magnetic field."
+      },
+      "Velocity": {
+        "name": "Velocity",
+        "standardName": "ID_QM_VELOCITY",
+        "value": "10",
+        "description": "Velocity"
+      },
+      "Bearing": {
+        "name": "Bearing",
+        "standardName": "ID_QM_BEARING",
+        "value": "11",
+        "description": "Compass Bearing"
+      },
+      "Force": {
+        "name": "Force",
+        "standardName": "ID_QM_FORCE",
+        "value": "12",
+        "description": "Applied Force, Electrical, Mechanical, etc."
+      },
+      "Torque": {
+        "name": "Torque",
+        "standardName": "ID_QM_TORQUE",
+        "value": "13",
+        "description": "Torque"
+      },
+      "Position": {
+        "name": "Position",
+        "standardName": "ID_QM_POSITION",
+        "value": "14",
+        "description": "Spacial Position"
+      },
+      "FluxLinkage": {
+        "name": "FluxLinkage",
+        "standardName": "ID_QM_FLUXLINKAGE",
+        "value": "15",
+        "description": "Flux linkage Weber Turns"
+      },
+      "FluxDensity": {
+        "name": "FluxDensity",
+        "standardName": "ID_QM_FLUXDENSITY",
+        "value": "16",
+        "description": "Magnetic field Density"
+      },
+      "Status": {
+        "name": "Status",
+        "standardName": "ID_QM_STATUS",
+        "value": "17",
+        "description": "Status Data"
+      }
+    },
+    "tagChanTriggerTypeID": {
+      "ID_CTT_NONE": {
+        "name": "ID_CTT_NONE",
+        "standardName": "ID_CTT_NONE",
+        "value": "0",
+        "description": "No transition - should not happen"
+      },
+      "ID_CTT_NORMAL_TO_LO": {
+        "name": "ID_CTT_NORMAL_TO_LO",
+        "standardName": "ID_CTT_NORMAL_TO_LO",
+        "value": "1",
+        "description": "Normal to low transition"
+      },
+      "ID_CTT_NORMAL_TO_LO_LO": {
+        "name": "ID_CTT_NORMAL_TO_LO_LO",
+        "standardName": "ID_CTT_NORMAL_TO_LO_LO",
+        "value": "2",
+        "description": "Normal to low low transition"
+      },
+      "ID_CTT_NORMAL_TO_HI": {
+        "name": "ID_CTT_NORMAL_TO_HI",
+        "standardName": "ID_CTT_NORMAL_TO_HI",
+        "value": "3",
+        "description": "Normal to High transition"
+      },
+      "ID_CTT_NORMAL_TO_HI_HI": {
+        "name": "ID_CTT_NORMAL_TO_HI_HI",
+        "standardName": "ID_CTT_NORMAL_TO_HI_HI",
+        "value": "4",
+        "description": "Normal to High High transition"
+      },
+      "ID_CTT_LO_LO_TO_LO": {
+        "name": "ID_CTT_LO_LO_TO_LO",
+        "standardName": "ID_CTT_LO_LO_TO_LO",
+        "value": "5",
+        "description": "Low Low to Lo transition"
+      },
+      "ID_CTT_LO_LO_TO_NORMAL": {
+        "name": "ID_CTT_LO_LO_TO_NORMAL",
+        "standardName": "ID_CTT_LO_LO_TO_NORMAL",
+        "value": "6",
+        "description": "Low Low to Normal transition"
+      },
+      "ID_CTT_LO_LO_TO_HI": {
+        "name": "ID_CTT_LO_LO_TO_HI",
+        "standardName": "ID_CTT_LO_LO_TO_HI",
+        "value": "7",
+        "description": "Low Low to High transition"
+      },
+      "ID_CTT_LO_LO_TO_HI_HI": {
+        "name": "ID_CTT_LO_LO_TO_HI_HI",
+        "standardName": "ID_CTT_LO_LO_TO_HI_HI",
+        "value": "8",
+        "description": "Low Low to High High transition"
+      },
+      "ID_CTT_LO_TO_LO_LO": {
+        "name": "ID_CTT_LO_TO_LO_LO",
+        "standardName": "ID_CTT_LO_TO_LO_LO",
+        "value": "9",
+        "description": "Low to Low Low transition"
+      },
+      "ID_CTT_LO_TO_NORMAL": {
+        "name": "ID_CTT_LO_TO_NORMAL",
+        "standardName": "ID_CTT_LO_TO_NORMAL",
+        "value": "10",
+        "description": "Low to Normal transition"
+      },
+      "ID_CTT_LO_TO_HI": {
+        "name": "ID_CTT_LO_TO_HI",
+        "standardName": "ID_CTT_LO_TO_HI",
+        "value": "11",
+        "description": "Low to High transition"
+      },
+      "ID_CTT_LO_TO_HI_HI": {
+        "name": "ID_CTT_LO_TO_HI_HI",
+        "standardName": "ID_CTT_LO_TO_HI_HI",
+        "value": "12",
+        "description": "Low to High High transition"
+      },
+      "ID_CTT_HI_TO_LO_LO": {
+        "name": "ID_CTT_HI_TO_LO_LO",
+        "standardName": "ID_CTT_HI_TO_LO_LO",
+        "value": "13",
+        "description": "High to Low Low transition"
+      },
+      "ID_CTT_HI_TO_LO": {
+        "name": "ID_CTT_HI_TO_LO",
+        "standardName": "ID_CTT_HI_TO_LO",
+        "value": "14",
+        "description": "High to Low transition"
+      },
+      "ID_CTT_HI_TO_NORMAL": {
+        "name": "ID_CTT_HI_TO_NORMAL",
+        "standardName": "ID_CTT_HI_TO_NORMAL",
+        "value": "15",
+        "description": "High to Normal transition"
+      },
+      "ID_CTT_HI_TO_HI_HI": {
+        "name": "ID_CTT_HI_TO_HI_HI",
+        "standardName": "ID_CTT_HI_TO_HI_HI",
+        "value": "16",
+        "description": "High to High High transition"
+      },
+      "ID_CTT_HI_HI_TO_LO_LO": {
+        "name": "ID_CTT_HI_HI_TO_LO_LO",
+        "standardName": "ID_CTT_HI_HI_TO_LO_LO",
+        "value": "17",
+        "description": "High High to Low Low transition"
+      },
+      "ID_CTT_HI_HI_TO_LO": {
+        "name": "ID_CTT_HI_HI_TO_LO",
+        "standardName": "ID_CTT_HI_HI_TO_LO",
+        "value": "18",
+        "description": "High High to Low transition"
+      },
+      "ID_CTT_HI_HI_TO_NORMAL": {
+        "name": "ID_CTT_HI_HI_TO_NORMAL",
+        "standardName": "ID_CTT_HI_HI_TO_NORMAL",
+        "value": "19",
+        "description": "High High to Normal transition"
+      },
+      "ID_CTT_HI_HI_TO_HI": {
+        "name": "ID_CTT_HI_HI_TO_HI",
+        "standardName": "ID_CTT_HI_HI_TO_HI",
+        "value": "20",
+        "description": "High High to High transition"
+      },
+      "ID_CTT_DB_LO": {
+        "name": "ID_CTT_DB_LO",
+        "standardName": "ID_CTT_DB_LO",
+        "value": "21",
+        "description": "Deadband transition lower"
+      },
+      "ID_CTT_DB_HI": {
+        "name": "ID_CTT_DB_HI",
+        "standardName": "ID_CTT_DB_HI",
+        "value": "22",
+        "description": "Deadband transition higher"
+      },
+      "ID_CTT_PERIODIC": {
+        "name": "ID_CTT_PERIODIC",
+        "standardName": "ID_CTT_PERIODIC",
+        "value": "23",
+        "description": "Hardware initiated trigger based on periodic trigger rule"
+      },
+      "ID_CTT_MANUAL": {
+        "name": "ID_CTT_MANUAL",
+        "standardName": "ID_CTT_MANUAL",
+        "value": "24",
+        "description": "User commanded sample - button was pushed"
+      },
+      "ID_CTT_INT_CROSS_TRIG": {
+        "name": "ID_CTT_INT_CROSS_TRIG",
+        "standardName": "ID_CTT_INT_CROSS_TRIG",
+        "value": "25",
+        "description": "Channel triggered because of internal cross-trigger rule.  tagCrossTriggerChanIdx is index of channel that triggered."
+      },
+      "ID_CTT_EXT_CROSS_TRIG": {
+        "name": "ID_CTT_EXT_CROSS_TRIG",
+        "standardName": "ID_CTT_EXT_CROSS_TRIG",
+        "value": "26",
+        "description": "Channel triggered because of external cross-trigger rule.  tagCrossTriggerChanIdx is index of channel that triggered on external device.  tagCrossTriggerDeviceName is the name of the external device that initiated the cross trigger."
+      },
+      "ID_CTT_MODULE": {
+        "name": "ID_CTT_MODULE",
+        "standardName": "ID_CTT_MODULE",
+        "value": "27",
+        "description": "Channel triggered because of hardware or software module, rule or algorithm"
+      },
+      "ID_CTT_RATE": {
+        "name": "ID_CTT_RATE",
+        "standardName": "ID_CTT_RATE",
+        "value": "28",
+        "description": "Rate of change threshold exceeded (dV/dt or dI/dt)"
+      }
+    },
+    "tagSettingPhysicalConnection": {
+      "ID_SINGLE_PHASE": {
+        "name": "ID_SINGLE_PHASE",
+        "standardName": "ID_SINGLE_PHASE",
+        "value": "1",
+        "description": "Single phase connection, 1 voltage, 1 current"
+      },
+      "ID_2ELEMENT_DELTA": {
+        "name": "ID_2ELEMENT_DELTA",
+        "standardName": "ID_2ELEMENT_DELTA",
+        "value": "2",
+        "description": "Delta Connected 2 Element Monitoring"
+      },
+      "ID_2_5ELEMENT_WYE": {
+        "name": "ID_2_5ELEMENT_WYE",
+        "standardName": "ID_2_5ELEMENT_WYE",
+        "value": "3",
+        "description": "Wye 2 Voltages, 3 Currents"
+      },
+      "ID_3ELMENT_WYE": {
+        "name": "ID_3ELMENT_WYE",
+        "standardName": "ID_3ELMENT_WYE",
+        "value": "4",
+        "description": "3 Voltages, 3 Currents"
+      },
+      "ID_3ELEMENT_DELTA": {
+        "name": "ID_3ELEMENT_DELTA",
+        "standardName": "ID_3ELEMENT_DELTA",
+        "value": "5",
+        "description": "Delta Connection, 3 voltages, 3 currents"
+      },
+      "ID_SPLIT_PHASE": {
+        "name": "ID_SPLIT_PHASE",
+        "standardName": "ID_SPLIT_PHASE",
+        "value": "6",
+        "description": "Split Single Phase,  2 Volage, 2 Current"
+      },
+      "ID_2ELEMENT_2PHASE": {
+        "name": "ID_2ELEMENT_2PHASE",
+        "standardName": "ID_2ELEMENT_2PHASE",
+        "value": "7",
+        "description": "2 Phase, 2 Voltages, 2 Currents"
+      }
+    }
+  }
+}

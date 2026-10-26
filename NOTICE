@@ -1,0 +1,5 @@
+pqdif is an independent native Python implementation of PQDIF.
+Identifier metadata and binary-format guidance derive from GPA Gemstone.PQDIF,
+Copyright (c) 2019-2023 Grid Protection Alliance, licensed under MIT.
+See licenses/Gemstone-MIT.txt and docs/compatibility.md for provenance.
+No IEEE standard text is included. IEEE/GPA do not endorse this project.
