@@ -42,7 +42,7 @@ RED: 15 high-level cases failed on missing public API. GREEN: 79 native tests pa
 ### Task 6: complete
 RED: committed fixtures absent and required live oracle failed setup (2 failed, 5 errors). Built actual pinned Gemstone project with portable .NET 9.0.320 (zero warnings/errors), generated deterministic fixtures with SHA-256 provenance. GREEN: 86 tests passed with PQDIF_REQUIRE_ORACLE=1, including both implementations reading and rewriting each other's none/zlib files. Registry metadata present in install. GitHub repository created at https://github.com/ShietFak/pqdif (empty, not yet pushed).
 
-### Task 7: implementation/review complete; release checks recorded below
+### Task 7: complete
 
 - Added Hypothesis raw-bit tree/file roundtrips and arbitrary/mutated malformed inputs.
 - RED: hardening run exposed 13 failures in UTF-16 code-unit handling, timestamps,
@@ -75,10 +75,17 @@ RED: committed fixtures absent and required live oracle failed setup (2 failed, 
 - Ruling: initial version is 0.1.0a1. Engineering checks and interoperability pass;
   do not market an alpha as established exhaustive IEEE 2025 conformance.
 
-### Task 8: publication in progress
+### Task 8: complete
 
 - Public repository `ShietFak/pqdif` created using the configured Git credential.
 - Ruling: push the implementation as a reviewable PR against the initial design
   branch `main`, per the saved plan. User authorization covers repository setup and
   continued implementation; do not add a routine finishing-menu approval stop.
 - No PyPI publication is requested or performed.
+- Implementation pushed to `feat/native-pqdif`; initial design pushed to `main`.
+- PR https://github.com/ShietFak/pqdif/pull/1 created and attached to this chat.
+- Remote repository visibility/branches and PR head verified. Local Git status was
+  clean after the implementation commit. Install artifacts retained in `outputs/`.
+- GitHub CI is running the full Python 3.11–3.14 Windows/Linux matrix, required live
+  Gemstone oracle, package checks and core-only wheel installation. Its current
+  results remain visible on the PR; local release evidence above is complete.

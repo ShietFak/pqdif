@@ -112,9 +112,9 @@
 
 **Files:** Git remote, final execution log; output wheel/sdist and brief report.
 
-- [ ] Check authenticated account and name availability; create public `pqdif` repository if absent, falling back to `pypqdif` only if necessary. Never overwrite unrelated work.
-- [ ] Push reviewed feature branch and open a reviewable PR with requirements/testing/support limitations; attach PR to chat.
-- [ ] Verify remote repository/PR, final test counts, clean status and install artifacts. No PyPI publication.
+- [x] Check authenticated account and name availability; create public `pqdif` repository if absent, falling back to `pypqdif` only if necessary. Never overwrite unrelated work.
+- [x] Push reviewed feature branch and open a reviewable PR with requirements/testing/support limitations; attach PR to chat.
+- [x] Verify remote repository/PR, final test counts, clean status and install artifacts. No PyPI publication.
 
 ## Completion contract
 
