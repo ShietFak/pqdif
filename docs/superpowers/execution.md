@@ -29,3 +29,6 @@ RED: 22 tests failed because pqdif was absent. GREEN: 22 passed (Python 3.12). I
 
 ### Task 2: complete
 RED: 17 codec tests failed because the codec was absent. GREEN: 39 total tests passed. Independent descriptor bytes, nested links, opaque relocation guard and malformed limits verified.
+
+### Task 3: complete
+RED: 19 physical-file tests failed on absent record API. GREEN: 58 native tests passed, including compressed/uncompressed records, Adler-32, header extensions, stream ownership, truncation and bounded inflate.
