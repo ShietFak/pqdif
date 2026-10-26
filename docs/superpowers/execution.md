@@ -35,3 +35,6 @@ RED: 19 physical-file tests failed on absent record API. GREEN: 58 native tests 
 
 ### Task 4: complete
 RED: six logical/registry tests failed on missing interfaces. GREEN: 64 native tests passed. Generated 137 tags and 483 identifiers with source SHA-256; context resets, required fields, index/count and sharing-cycle validation passed.
+
+### Task 5: complete
+RED: 15 high-level cases failed on missing public API. GREEN: 79 native tests passed. Live tree edits preserved unknown nested raw values. Added Series in series.py to keep conversion/sharing separate from file construction. Multi-rate increments accumulate segment origins; no calibration conversion is silently guessed.
