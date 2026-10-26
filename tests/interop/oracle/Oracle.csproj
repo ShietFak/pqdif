@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode>true</RestoreLockedMode>
     <GemstoneProject Condition="'$(GemstoneProject)' == ''">../../../work/reference/gemstone-pqdif/src/Gemstone.PQDIF/Gemstone.PQDIF.csproj</GemstoneProject>
   </PropertyGroup>
   <ItemGroup>

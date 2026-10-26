@@ -1,4 +1,5 @@
 """Bounded PQDIF collection-body codec; links are absolute within a record body."""
+
 from __future__ import annotations
 
 import struct
@@ -13,7 +14,10 @@ _LINK = struct.Struct("<ii")
 
 
 def decode_collection(
-    data: bytes, *, tag: UUID = EMPTY_TAG, limits: Limits = DEFAULT_LIMITS,
+    data: bytes,
+    *,
+    tag: UUID = EMPTY_TAG,
+    limits: Limits = DEFAULT_LIMITS,
 ) -> Collection:
     """Decode a bounded record body, retaining unknown tags and raw value bytes."""
     if len(data) > limits.max_record_bytes:
@@ -37,10 +41,33 @@ def decode_collection(
         check(start, table_end - start, end)
         result = Collection(collection_tag)
         allocations: list[tuple[int, int]] = []
+        # Validate *all* sibling allocations before decoding/copying any payload.
+        # Otherwise repeated links can amplify a small file into many large copies.
         for index in range(count):
             pos = start + 4 + index * 28
-            element_tag = UUID(bytes_le=data[pos:pos + 16])
-            kind, physical, embedded, reserved = data[pos + 16:pos + 20]
+            embedded = data[pos + 18]
+            if embedded not in (0, 1):
+                raise PqdifFormatError("invalid embedded flag", pos + 18)
+            if not embedded:
+                payload, allocated = _LINK.unpack_from(data, pos + 20)
+                if payload < table_end:
+                    raise PqdifFormatError(
+                        "link overlaps collection table or creates cycle", pos + 20
+                    )
+                if payload % 4 or allocated % 4:
+                    raise PqdifFormatError("linked payload is not four-byte aligned", pos + 20)
+                check(payload, allocated, end)
+                if allocated <= 0:
+                    raise PqdifFormatError("empty linked allocation", pos + 24)
+                allocations.append((payload, payload + allocated))
+        allocations.sort()
+        for previous, current in zip(allocations, allocations[1:], strict=False):
+            if current[0] < previous[1]:
+                raise PqdifFormatError("overlapping element allocations", current[0])
+        for index in range(count):
+            pos = start + 4 + index * 28
+            element_tag = UUID(bytes_le=data[pos : pos + 16])
+            kind, physical, embedded, reserved = data[pos + 16 : pos + 20]
             if embedded not in (0, 1):
                 raise PqdifFormatError("invalid embedded flag", pos + 18)
             payload = pos + 20
@@ -48,12 +75,13 @@ def decode_collection(
             if not embedded:
                 payload, allocated = _LINK.unpack_from(data, payload)
                 if payload < table_end:
-                    raise PqdifFormatError("link overlaps collection table or creates cycle", pos + 20)
+                    raise PqdifFormatError(
+                        "link overlaps collection table or creates cycle", pos + 20
+                    )
                 check(payload, allocated, end)
                 if allocated <= 0:
                     raise PqdifFormatError("empty linked allocation", pos + 24)
                 payload_end = payload + allocated
-                allocations.append((payload, payload_end))
             try:
                 physical_type = PhysicalType(physical)
             except ValueError:
@@ -72,28 +100,39 @@ def decode_collection(
                     if embedded and size > 8:
                         raise PqdifFormatError("scalar too large for inline value", pos)
                     check(payload, size, payload_end)
-                    element = Scalar(element_tag, physical_type, data[payload:payload + size],
-                                     reserved=reserved)
+                    element = Scalar(
+                        element_tag,
+                        physical_type,
+                        data[payload : payload + size],
+                        reserved=reserved,
+                    )
                 else:
                     if embedded:
                         raise PqdifFormatError("vector cannot be embedded", pos)
                     check(payload, 4, payload_end)
                     values = _I32.unpack_from(data, payload)[0]
                     if values < 0 or values > limits.max_vector_values:
-                        raise PqdifFormatError("invalid vector count or vector limit exceeded", payload)
+                        raise PqdifFormatError(
+                            "invalid vector count or vector limit exceeded", payload
+                        )
                     check(payload + 4, values * size, payload_end)
-                    element = Vector(element_tag, physical_type,
-                                     data[payload + 4:payload + 4 + values * size], reserved=reserved)
+                    element = Vector(
+                        element_tag,
+                        physical_type,
+                        data[payload + 4 : payload + 4 + values * size],
+                        reserved=reserved,
+                    )
             else:
-                element = OpaqueElement(element_tag, kind, physical,
-                                        data[payload:payload_end], bool(embedded), reserved=reserved)
+                element = OpaqueElement(
+                    element_tag,
+                    kind,
+                    physical,
+                    data[payload:payload_end],
+                    bool(embedded),
+                    reserved=reserved,
+                )
             result.elements.append(element)
 
-        # Sorting avoids quadratic interval checks on large descriptor tables.
-        allocations.sort()
-        for previous, current in zip(allocations, allocations[1:]):
-            if current[0] < previous[1]:
-                raise PqdifFormatError("overlapping element allocations", current[0])
         return result
 
     return collection(0, len(data), 0, tag)
@@ -138,6 +177,8 @@ def encode_collection(root: Collection, *, limits: Limits = DEFAULT_LIMITS) -> b
                     raise ValueError("vector length does not match physical type")
                 if element.count > limits.max_vector_values:
                     raise ValueError("vector limit exceeded")
+                if cursor + 4 + len(element.raw) > limits.max_record_bytes:
+                    raise ValueError("record body exceeds limit")
                 payload = _I32.pack(element.count) + element.raw
             else:
                 kind, physical = element.element_type, element.physical_type
@@ -146,9 +187,12 @@ def encode_collection(root: Collection, *, limits: Limits = DEFAULT_LIMITS) -> b
                     raise UnsupportedFeatureError("opaque payload is unsafe to relocate")
                 if embedded and len(element.raw) != 8:
                     raise ValueError("opaque embedded payload must contain eight bytes")
+                if not embedded and not element.raw:
+                    raise ValueError("empty linked opaque payload")
                 payload = element.raw
-            descriptors += element.tag.bytes_le + bytes([kind, physical, int(embedded),
-                                                          element.reserved])
+            descriptors += element.tag.bytes_le + bytes(
+                [kind, physical, int(embedded), element.reserved]
+            )
             if embedded:
                 descriptors += payload.ljust(8, b"\0")
             else:

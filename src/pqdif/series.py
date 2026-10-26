@@ -1,4 +1,5 @@
 """Stored and engineering-value series views, including sharing and expansion."""
+
 from __future__ import annotations
 
 import math
@@ -10,10 +11,11 @@ from . import tags as t
 from .elements import Collection, Scalar, Vector
 from .errors import UnsupportedFeatureError, ValidationError
 from .logical import children, integer, require
-from .types import DEFAULT_LIMITS, Limits, PhysicalType, StorageMethod, Value
+from .types import DEFAULT_LIMITS, NUMPY_DTYPES, Limits, PhysicalType, StorageMethod, Value
 
 if TYPE_CHECKING:
     import numpy.typing as npt
+
     from .api import Channel
 
 VALUE_TYPE = UUID("67f6af97-f753-11cf-9d89-0080c72e70a3")
@@ -33,37 +35,49 @@ class Series:
     """
 
     def __init__(
-        self, values: Iterable[Value], *, units: int = 0,
+        self,
+        values: Iterable[Value],
+        *,
+        units: int = 0,
         physical_type: PhysicalType = PhysicalType.REAL8,
-        value_type: UUID = VALUE_TYPE, characteristic: UUID = NO_CHARACTERISTIC,
-        storage: int = StorageMethod.VALUES, scale: Value = 1, offset: Value = 0,
+        value_type: UUID = VALUE_TYPE,
+        characteristic: UUID = NO_CHARACTERISTIC,
+        storage: int = StorageMethod.VALUES,
+        scale: Value | None = None,
+        offset: Value | None = None,
         share: tuple[int, int] | None = None,
     ):
         self.physical = Collection(t.ONE_SERIES_INSTANCE)
-        self.definition = Collection(t.ONE_SERIES_DEFINITION, [
-            Scalar.from_value(t.VALUE_TYPE_ID, PhysicalType.GUID, value_type),
-            Scalar.from_value(t.QUANTITY_UNITS_ID, PhysicalType.UINT4, units),
-            Scalar.from_value(t.QUANTITY_CHARACTERISTIC_ID, PhysicalType.GUID, characteristic),
-            Scalar.from_value(t.STORAGE_METHOD_ID, PhysicalType.UINT4, storage),
-        ])
+        self.definition = Collection(
+            t.ONE_SERIES_DEFINITION,
+            [
+                Scalar.from_value(t.VALUE_TYPE_ID, PhysicalType.GUID, value_type),
+                Scalar.from_value(t.QUANTITY_UNITS_ID, PhysicalType.UINT4, units),
+                Scalar.from_value(t.QUANTITY_CHARACTERISTIC_ID, PhysicalType.GUID, characteristic),
+                Scalar.from_value(t.STORAGE_METHOD_ID, PhysicalType.UINT4, storage),
+            ],
+        )
         self._channel: Channel | None = None
         self._limits = DEFAULT_LIMITS
         if share is None:
-            self.physical.elements.append(Vector.from_values(t.SERIES_VALUES, physical_type, values))
+            self.physical.elements.append(
+                Vector.from_values(t.SERIES_VALUES, physical_type, values)
+            )
         else:
             _scalar(self.physical, t.SERIES_SHARE_CHANNEL_INDEX, PhysicalType.UINT4, share[0])
             _scalar(self.physical, t.SERIES_SHARE_SERIES_INDEX, PhysicalType.UINT4, share[1])
         if storage & StorageMethod.SCALED:
-            _scalar(self.physical, t.SERIES_SCALE, physical_type, scale)
-            _scalar(self.physical, t.SERIES_OFFSET, physical_type, offset)
-            # Shared series inherit absent scale/offset from their target.
-            if share is not None and scale == 1 and offset == 0:
-                self.physical.elements = [e for e in self.physical.elements
-                                          if e.tag not in (t.SERIES_SCALE, t.SERIES_OFFSET)]
+            if share is None or scale is not None:
+                _scalar(self.physical, t.SERIES_SCALE, physical_type, 1 if scale is None else scale)
+            if share is None or offset is not None:
+                _scalar(
+                    self.physical, t.SERIES_OFFSET, physical_type, 0 if offset is None else offset
+                )
 
     @classmethod
-    def _bind(cls, physical: Collection, definition: Collection, channel: Channel,
-              limits: Limits) -> Series:
+    def _bind(
+        cls, physical: Collection, definition: Collection, channel: Channel, limits: Limits
+    ) -> Series:
         result = cls.__new__(cls)
         result.physical, result.definition = physical, definition
         result._channel, result._limits = channel, limits
@@ -80,6 +94,8 @@ class Series:
     def _sharing_chain(self) -> list[Series]:
         chain = []
         seen: set[int] = set()
+        channels_by_observation: dict[int, list[Channel]] = {}
+        series_by_channel: dict[tuple[int, int], list[Series]] = {}
         current = self
         while True:
             if id(current.physical) in seen:
@@ -94,12 +110,22 @@ class Series:
                 raise ValidationError("incomplete series sharing reference")
             if current._channel is None or current._channel._observation is None:
                 raise ValidationError("shared series must belong to an observation")
-            channels = current._channel._observation.channels
+            observation = current._channel._observation
+            observation_key = id(observation.physical)
+            if observation_key not in channels_by_observation:
+                channels_by_observation[observation_key] = observation.channels
+            channels = channels_by_observation[observation_key]
             ci = integer(current.physical, t.SERIES_SHARE_CHANNEL_INDEX)
             si = integer(current.physical, t.SERIES_SHARE_SERIES_INDEX)
-            if ci >= len(channels) or si >= len(channels[ci].series):
+            if ci >= len(channels):
                 raise ValidationError("series sharing index out of range")
-            current = channels[ci].series[si]
+            channel_key = (observation_key, ci)
+            if channel_key not in series_by_channel:
+                series_by_channel[channel_key] = channels[ci].series
+            series = series_by_channel[channel_key]
+            if si >= len(series):
+                raise ValidationError("series sharing index out of range")
+            current = series[si]
 
     @property
     def stored_values(self) -> Vector:
@@ -110,8 +136,9 @@ class Series:
     def stored_values(self, value: Vector) -> None:
         if self.physical.get(t.SERIES_SHARE_CHANNEL_INDEX) is not None:
             raise ValidationError("edit shared values through the referenced series")
-        replacement = Vector(t.SERIES_VALUES, value.physical_type, value.raw,
-                             reserved=value.reserved)
+        replacement = Vector(
+            t.SERIES_VALUES, value.physical_type, value.raw, reserved=value.reserved
+        )
         self.physical.replace(replacement)
 
     @property
@@ -120,6 +147,7 @@ class Series:
 
     def _scale_offset(self) -> tuple[Value, Value]:
         chain = self._sharing_chain()
+
         def field(tag: UUID, default: Value) -> Value:
             for series in chain:
                 element = series.physical.get(tag)
@@ -128,6 +156,7 @@ class Series:
                         raise ValidationError("series scale/offset must be scalar")
                     return element.value
             return default
+
         return field(t.SERIES_SCALE, 1), field(t.SERIES_OFFSET, 0)
 
     def _transducer_ratio(self) -> float:
@@ -138,14 +167,18 @@ class Series:
             return 1
         calibration = settings.body.get(t.USE_CALIBRATION)
         if isinstance(calibration, Scalar) and calibration.value:
-            raise UnsupportedFeatureError("engineering conversion with calibration is not implemented")
+            raise UnsupportedFeatureError(
+                "engineering conversion with calibration is not implemented"
+            )
         enabled = settings.body.get(t.USE_TRANSDUCER)
         if not isinstance(enabled, Scalar) or not enabled.value:
             return 1
         index = integer(self._channel.physical, t.CHANNEL_DEFINITION_INDEX)
-        matches = [setting for setting in children(settings.body, t.CHANNEL_SETTINGS_ARRAY,
-                                                   t.ONE_CHANNEL_SETTING)
-                   if integer(setting, t.CHANNEL_DEFINITION_INDEX) == index]
+        matches = [
+            setting
+            for setting in children(settings.body, t.CHANNEL_SETTINGS_ARRAY, t.ONE_CHANNEL_SETTING)
+            if integer(setting, t.CHANNEL_DEFINITION_INDEX) == index
+        ]
         if len(matches) > 1:
             raise ValidationError("duplicate channel setting index")
         if not matches:
@@ -157,7 +190,10 @@ class Series:
         if not isinstance(system, Scalar) or not isinstance(monitor, Scalar):
             raise ValidationError("transducer ratio requires system and monitor scalars")
         try:
-            numerator, denominator = float(cast(float, system.value)), float(cast(float, monitor.value))
+            numerator, denominator = (
+                float(cast(float, system.value)),
+                float(cast(float, monitor.value)),
+            )
         except (ValueError, TypeError) as error:
             raise ValidationError("invalid transducer ratio") from error
         if not math.isfinite(numerator) or not math.isfinite(denominator) or denominator == 0:
@@ -183,8 +219,16 @@ class Series:
             values = self._expand_increment(raw, limits.max_expanded_values)
         if storage & StorageMethod.SCALED:
             if vector.physical_type == PhysicalType.TIMESTAMP:
-                raise UnsupportedFeatureError("scaled timestamps require explicit raw interpretation")
+                raise UnsupportedFeatureError(
+                    "scaled timestamps require explicit raw interpretation"
+                )
             scale, offset = self._scale_offset()
+            if (
+                vector.physical_type not in NUMPY_DTYPES
+                or not isinstance(scale, (int, float, complex))
+                or not isinstance(offset, (int, float, complex))
+            ):
+                raise ValidationError("scaling requires numeric values, scale and offset")
             try:
                 values = tuple(cast(Any, offset) + cast(Any, v) * scale for v in values)
             except (ValueError, TypeError) as error:
@@ -192,6 +236,8 @@ class Series:
         if ratio != 1:
             if vector.physical_type == PhysicalType.TIMESTAMP:
                 return values
+            if vector.physical_type not in NUMPY_DTYPES:
+                raise ValidationError("transducer conversion requires numeric values")
             try:
                 values = tuple(cast(Any, value) * ratio for value in values)
             except (ValueError, TypeError) as error:
@@ -207,6 +253,7 @@ class Series:
             if result != value:
                 raise ValidationError("fractional increment count")
             return result
+
         if not raw:
             raise ValidationError("empty increment sequence")
         rates = count(raw[0])
@@ -237,6 +284,8 @@ class Series:
         vector = self.stored_values
         if not engineering:
             return vector.to_numpy()
+        if vector.count > self._limits.max_expanded_values:
+            raise ValidationError("series expansion exceeds limit")
         if self.storage_method == StorageMethod.VALUES and self._transducer_ratio() == 1:
             return vector.to_numpy()
         result = np.asarray(self.values)

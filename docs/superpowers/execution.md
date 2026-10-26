@@ -41,3 +41,44 @@ RED: 15 high-level cases failed on missing public API. GREEN: 79 native tests pa
 
 ### Task 6: complete
 RED: committed fixtures absent and required live oracle failed setup (2 failed, 5 errors). Built actual pinned Gemstone project with portable .NET 9.0.320 (zero warnings/errors), generated deterministic fixtures with SHA-256 provenance. GREEN: 86 tests passed with PQDIF_REQUIRE_ORACLE=1, including both implementations reading and rewriting each other's none/zlib files. Registry metadata present in install. GitHub repository created at https://github.com/ShietFak/pqdif (empty, not yet pushed).
+
+### Task 7: implementation/review complete; release checks recorded below
+
+- Added Hypothesis raw-bit tree/file roundtrips and arbitrary/mutated malformed inputs.
+- RED: hardening run exposed 13 failures in UTF-16 code-unit handling, timestamps,
+  alignment, empty opaque output, known-property behavior, NumPy limits and validation.
+- Independent review reproduced allocation amplification (13.2 MB peak from 71 KB
+  input). RED spy regression observed two payload copies before overlap rejection.
+  Fixed by preflighting all sibling allocations before any payload copy.
+- Independent review reproduced three further cases; RED tests confirmed channel
+  reuse mutated earlier observations, explicit identity scaling was lost, and
+  character scaling could repeat strings. Fixed owned channel copies, None defaults
+  for inheritance, and numeric operands checked before arithmetic.
+- RED sharing-chain regression observed 198 full list builds for a 100-node chain.
+  Per-traversal context/series caches make each channel list build once.
+- Expanded oracle comparison to all numeric series; observed seven RED missing
+  canonical fields before extending the actual C# adapter and regenerating JSON.
+- Ruling: follow IEEE native reference cumulative multi-rate expansion. Gemstone
+  resets segment origins; IEEE C# validator uses another transition convention.
+  Added a live test documenting the discrepancy and raw interchange preservation.
+  Full current normative verification remains an explicit conformance milestone.
+- RED registry provenance test exposed checkout-line-ending-dependent hashing;
+  generator now hashes the pinned Git blob. Metadata and test are GREEN.
+- GREEN: 112 tests with mandatory live oracle, Ruff/format and strict mypy checks.
+- Final fresh independent reviewer found no critical/important defects and
+  independently reran 40 high-level/logical/hardening cases successfully.
+- Built wheel and sdist successfully; Twine metadata checks passed. Installed wheel
+  under Python -I in two fresh environments: core-only with NumPy absent, and with
+  NumPy available; compressed construction/reading and registry packaging passed.
+- Added cross-platform Python 3.11–3.14 CI, required Gemstone job, clean-wheel job,
+  license/provenance, API/architecture/support/development docs and example.
+- Ruling: initial version is 0.1.0a1. Engineering checks and interoperability pass;
+  do not market an alpha as established exhaustive IEEE 2025 conformance.
+
+### Task 8: publication in progress
+
+- Public repository `ShietFak/pqdif` created using the configured Git credential.
+- Ruling: push the implementation as a reviewable PR against the initial design
+  branch `main`, per the saved plan. User authorization covers repository setup and
+  continued implementation; do not add a routine finishing-menu approval stop.
+- No PyPI publication is requested or performed.

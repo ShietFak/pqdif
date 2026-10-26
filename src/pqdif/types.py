@@ -1,9 +1,11 @@
 """PQDIF wire types; all values use little-endian encoding."""
+
 from __future__ import annotations
 
+import math
 import struct
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from enum import IntEnum, IntFlag
 from typing import TypeAlias, cast
 from uuid import UUID
@@ -77,7 +79,7 @@ class Limits:
 
 DEFAULT_LIMITS = Limits()
 EMPTY_TAG = UUID(int=0)
-EPOCH = datetime(1900, 1, 1, tzinfo=timezone.utc)
+EPOCH = datetime(1900, 1, 1, tzinfo=UTC)
 
 
 @dataclass(frozen=True)
@@ -87,14 +89,27 @@ class Timestamp:
     days: int
     seconds: float
 
+    def validate(self) -> None:
+        """Check wire-domain bounds without rounding or converting to datetime."""
+        if (
+            not 0 <= self.days <= 2**32 - 1
+            or not math.isfinite(self.seconds)
+            or not 0 <= self.seconds < 86400
+        ):
+            raise ValueError("invalid PQDIF timestamp day/seconds range")
+
     def to_datetime(self) -> datetime:
-        return EPOCH + timedelta(days=self.days, seconds=self.seconds)
+        self.validate()
+        try:
+            return EPOCH + timedelta(days=self.days, seconds=self.seconds)
+        except OverflowError as error:
+            raise ValueError("PQDIF timestamp exceeds Python datetime range") from error
 
     @classmethod
     def from_datetime(cls, value: datetime) -> Timestamp:
         if value.tzinfo is None or value.utcoffset() is None:
             raise ValueError("timestamp requires a timezone-aware datetime")
-        delta = value.astimezone(timezone.utc) - EPOCH
+        delta = value.astimezone(UTC) - EPOCH
         if delta.days < 0:
             raise ValueError("PQDIF timestamps cannot precede 1900-01-01")
         return cls(delta.days, delta.seconds + delta.microseconds / 1_000_000)
@@ -103,21 +118,39 @@ class Timestamp:
 Value: TypeAlias = bool | int | float | complex | str | UUID | Timestamp
 
 _FORMATS: dict[PhysicalType, str] = {
-    PhysicalType.BOOLEAN1: "B", PhysicalType.BOOLEAN2: "H", PhysicalType.BOOLEAN4: "I",
-    PhysicalType.CHAR1: "c", PhysicalType.CHAR2: "2s",
-    PhysicalType.INT1: "b", PhysicalType.INT2: "h", PhysicalType.INT4: "i",
-    PhysicalType.UINT1: "B", PhysicalType.UINT2: "H", PhysicalType.UINT4: "I",
-    PhysicalType.REAL4: "f", PhysicalType.REAL8: "d",
-    PhysicalType.COMPLEX8: "ff", PhysicalType.COMPLEX16: "dd",
-    PhysicalType.TIMESTAMP: "Id", PhysicalType.GUID: "16s",
+    PhysicalType.BOOLEAN1: "B",
+    PhysicalType.BOOLEAN2: "H",
+    PhysicalType.BOOLEAN4: "I",
+    PhysicalType.CHAR1: "c",
+    PhysicalType.CHAR2: "2s",
+    PhysicalType.INT1: "b",
+    PhysicalType.INT2: "h",
+    PhysicalType.INT4: "i",
+    PhysicalType.UINT1: "B",
+    PhysicalType.UINT2: "H",
+    PhysicalType.UINT4: "I",
+    PhysicalType.REAL4: "f",
+    PhysicalType.REAL8: "d",
+    PhysicalType.COMPLEX8: "ff",
+    PhysicalType.COMPLEX16: "dd",
+    PhysicalType.TIMESTAMP: "Id",
+    PhysicalType.GUID: "16s",
 }
 
 NUMPY_DTYPES: dict[PhysicalType, str] = {
-    PhysicalType.BOOLEAN1: "u1", PhysicalType.BOOLEAN2: "<u2", PhysicalType.BOOLEAN4: "<u4",
-    PhysicalType.INT1: "i1", PhysicalType.INT2: "<i2", PhysicalType.INT4: "<i4",
-    PhysicalType.UINT1: "u1", PhysicalType.UINT2: "<u2", PhysicalType.UINT4: "<u4",
-    PhysicalType.REAL4: "<f4", PhysicalType.REAL8: "<f8",
-    PhysicalType.COMPLEX8: "<c8", PhysicalType.COMPLEX16: "<c16",
+    PhysicalType.BOOLEAN1: "u1",
+    PhysicalType.BOOLEAN2: "<u2",
+    PhysicalType.BOOLEAN4: "<u4",
+    PhysicalType.INT1: "i1",
+    PhysicalType.INT2: "<i2",
+    PhysicalType.INT4: "<i4",
+    PhysicalType.UINT1: "u1",
+    PhysicalType.UINT2: "<u2",
+    PhysicalType.UINT4: "<u4",
+    PhysicalType.REAL4: "<f4",
+    PhysicalType.REAL8: "<f8",
+    PhysicalType.COMPLEX8: "<c8",
+    PhysicalType.COMPLEX16: "<c16",
 }
 
 
@@ -130,6 +163,7 @@ def pack_value(physical_type: PhysicalType, value: Value) -> bytes:
     elif physical_type == PhysicalType.TIMESTAMP:
         if not isinstance(value, Timestamp):
             raise ValueError("TIMESTAMP requires Timestamp")
+        value.validate()
         args = (value.days, value.seconds)
     elif physical_type in (PhysicalType.COMPLEX8, PhysicalType.COMPLEX16):
         number = complex(cast("complex", value))
@@ -137,7 +171,9 @@ def pack_value(physical_type: PhysicalType, value: Value) -> bytes:
     elif physical_type in (PhysicalType.CHAR1, PhysicalType.CHAR2):
         if not isinstance(value, str) or len(value) != 1:
             raise ValueError("character requires one character")
-        raw = value.encode("ascii" if physical_type == PhysicalType.CHAR1 else "utf-16-le")
+        raw = value.encode(
+            "ascii" if physical_type == PhysicalType.CHAR1 else "utf-16-le", errors="surrogatepass"
+        )
         if len(raw) != physical_type.size:
             raise ValueError("character does not fit physical type")
         args = (raw,)
@@ -158,7 +194,9 @@ def unpack_value(physical_type: PhysicalType, raw: bytes) -> Value:
     if physical_type in (PhysicalType.COMPLEX8, PhysicalType.COMPLEX16):
         return complex(*values)
     if physical_type in (PhysicalType.CHAR1, PhysicalType.CHAR2):
-        return raw.decode("ascii" if physical_type == PhysicalType.CHAR1 else "utf-16-le")
+        return raw.decode(
+            "ascii" if physical_type == PhysicalType.CHAR1 else "utf-16-le", errors="surrogatepass"
+        )
     if physical_type in (PhysicalType.BOOLEAN1, PhysicalType.BOOLEAN2, PhysicalType.BOOLEAN4):
         return bool(values[0])
     return cast(Value, values[0])

@@ -1,4 +1,5 @@
 """File/record framing and current PQDIF record-level zlib compression."""
+
 from __future__ import annotations
 
 import io
@@ -41,6 +42,7 @@ class Record:
 
 def compression_mode(container: Record) -> bool:
     """Return whether records are zlib-compressed; reject unknown declarations."""
+
     def number(tag: UUID) -> int:
         element = container.body.get(tag) if container.body else None
         if element is None:
@@ -71,7 +73,10 @@ def _inflate(data: bytes, limit: int, offset: int) -> bytes:
 
 
 def loads_records(
-    data: bytes, *, limits: Limits = DEFAULT_LIMITS, verify_checksum: bool = True,
+    data: bytes,
+    *,
+    limits: Limits = DEFAULT_LIMITS,
+    verify_checksum: bool = True,
 ) -> list[Record]:
     """Parse the linked record chain from an in-memory file.
 
@@ -89,8 +94,9 @@ def loads_records(
             raise PqdifFormatError("record count exceeds limit", offset)
         if offset + _HEADER.size > len(data):
             raise PqdifFormatError("truncated record header", offset)
-        signature, tag, header_size, body_size, next_pos, checksum, reserved = (
-            _HEADER.unpack_from(data, offset))
+        signature, tag, header_size, body_size, next_pos, checksum, reserved = _HEADER.unpack_from(
+            data, offset
+        )
         if signature != SIGNATURE.bytes_le:
             raise PqdifFormatError("invalid PQDIF record signature", offset)
         if header_size < 64 or header_size > limits.max_record_bytes:
@@ -107,22 +113,30 @@ def loads_records(
             raise PqdifFormatError("duplicate container record", offset)
         if next_pos != 0 and (next_pos < end or next_pos >= len(data)):
             raise PqdifFormatError("invalid next record link or record cycle", offset + 40)
-        stored = data[offset + header_size:end]
+        stored = data[offset + header_size : end]
         if verify_checksum and checksum and zlib.adler32(stored) != checksum:
             raise PqdifFormatError("record checksum mismatch", offset + 44)
-        body_bytes = (_inflate(stored, min(limits.max_record_bytes,
-                                         limits.max_total_decoded_bytes - total_decoded),
-                               offset + header_size)
-                      if compressed and stored else stored)
+        body_bytes = (
+            _inflate(
+                stored,
+                min(limits.max_record_bytes, limits.max_total_decoded_bytes - total_decoded),
+                offset + header_size,
+            )
+            if compressed and stored
+            else stored
+        )
         total_decoded += len(body_bytes)
         if total_decoded > limits.max_total_decoded_bytes:
             raise PqdifFormatError("total decoded bytes exceed limit", offset)
         try:
-            body = decode_collection(body_bytes, tag=type_tag, limits=limits) if body_bytes else None
+            body = (
+                decode_collection(body_bytes, tag=type_tag, limits=limits) if body_bytes else None
+            )
         except PqdifFormatError as error:
             raise PqdifFormatError(f"record body: {error}", offset + header_size) from error
-        record = Record(type_tag, body, reserved, data[offset + 64:offset + header_size],
-                        offset, checksum)
+        record = Record(
+            type_tag, body, reserved, data[offset + 64 : offset + header_size], offset, checksum
+        )
         records.append(record)
         if len(records) == 1:
             try:
@@ -170,9 +184,15 @@ def dumps_records(records: Iterable[Record], *, limits: Limits = DEFAULT_LIMITS)
         end = position + header_size + len(stored)
         if end > min(limits.max_file_bytes, 2**31 - 1):
             raise ValueError("file exceeds size limit or signed record address range")
-        header = _HEADER.pack(SIGNATURE.bytes_le, current.type_tag.bytes_le, header_size,
-                              len(stored), end if following else 0,
-                              zlib.adler32(stored), current.reserved)
+        header = _HEADER.pack(
+            SIGNATURE.bytes_le,
+            current.type_tag.bytes_le,
+            header_size,
+            len(stored),
+            end if following else 0,
+            zlib.adler32(stored),
+            current.reserved,
+        )
         chunks.append(header + current.header_extra + stored)
         if following is None:
             return b"".join(chunks)
@@ -180,7 +200,10 @@ def dumps_records(records: Iterable[Record], *, limits: Limits = DEFAULT_LIMITS)
 
 
 def read_records(
-    source: Source, *, limits: Limits = DEFAULT_LIMITS, verify_checksum: bool = True,
+    source: Source,
+    *,
+    limits: Limits = DEFAULT_LIMITS,
+    verify_checksum: bool = True,
 ) -> list[Record]:
     """Read from a path or current stream position; leave supplied streams open."""
     if isinstance(source, (str, os.PathLike)):
@@ -198,7 +221,10 @@ def read_records(
 
 
 def write_records(
-    records: Iterable[Record], target: Source, *, limits: Limits = DEFAULT_LIMITS,
+    records: Iterable[Record],
+    target: Source,
+    *,
+    limits: Limits = DEFAULT_LIMITS,
 ) -> None:
     """Write a standalone file image at the current position; leave supplied streams open."""
     data = dumps_records(records, limits=limits)

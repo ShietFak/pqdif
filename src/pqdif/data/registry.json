@@ -2,7 +2,7 @@
   "provenance": {
     "repository": "https://github.com/gemstone/pqdif",
     "commit": "296d859d094347420f22415b91cfe428ff87687b",
-    "source_sha256": "0cbec86c7e843d74e9c08f89230bc69a4e462a829d4a6c49346d24418043263e",
+    "source_sha256": "36fde38aae119e63284f3fc30aac25198b791e5d2a2283bf3200e4b1548a7493",
     "license": "MIT",
     "copyright": "2019-2023 Grid Protection Alliance"
   },

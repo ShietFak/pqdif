@@ -1,4 +1,5 @@
 """Ordered lossless element model. Raw value bytes are the source of truth."""
+
 from __future__ import annotations
 
 from collections.abc import Iterable
@@ -10,7 +11,6 @@ from .errors import UnsupportedFeatureError, ValidationError
 from .types import EMPTY_TAG, NUMPY_DTYPES, PhysicalType, Value, pack_value, unpack_value
 
 if TYPE_CHECKING:
-    import numpy as np
     import numpy.typing as npt
 
 
@@ -67,8 +67,10 @@ class Vector:
     @property
     def values(self) -> tuple[Value, ...]:
         size = self.physical_type.size
-        return tuple(unpack_value(self.physical_type, self.raw[i:i + size])
-                     for i in range(0, len(self.raw), size))
+        return tuple(
+            unpack_value(self.physical_type, self.raw[i : i + size])
+            for i in range(0, len(self.raw), size)
+        )
 
     @property
     def text(self) -> str:
@@ -84,8 +86,11 @@ class Vector:
         if self.physical_type not in NUMPY_DTYPES:
             raise UnsupportedFeatureError("NumPy view requires a numeric physical type")
         result = np.frombuffer(self.raw, dtype=NUMPY_DTYPES[self.physical_type])
-        if self.physical_type in (PhysicalType.BOOLEAN1, PhysicalType.BOOLEAN2,
-                                  PhysicalType.BOOLEAN4):
+        if self.physical_type in (
+            PhysicalType.BOOLEAN1,
+            PhysicalType.BOOLEAN2,
+            PhysicalType.BOOLEAN4,
+        ):
             result = result.astype(np.bool_)
             result.flags.writeable = False
         return result

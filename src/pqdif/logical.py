@@ -1,4 +1,5 @@
 """Context-aware logical views; these never replace the underlying physical tree."""
+
 from __future__ import annotations
 
 from collections.abc import Iterable
@@ -11,7 +12,7 @@ from .elements import Collection, Element, Scalar, Vector
 from .errors import ValidationError
 from .physical import Record, compression_mode
 from .types import PhysicalType as P
-from .types import Value
+from .types import Timestamp, Value
 
 
 def require(root: Collection, tag: UUID, expected: type[Element] | None = None) -> Element:
@@ -44,9 +45,16 @@ def _fields(root: Collection, scalars: dict[UUID, P], vectors: dict[UUID, P]) ->
         element = cast(Scalar, require(root, tag, Scalar))
         if element.physical_type != kind:
             raise ValidationError(f"{t.BY_ID[tag].name} must be {kind.name}")
+        if kind == P.TIMESTAMP:
+            try:
+                cast(Timestamp, element.value).validate()
+            except ValueError as error:
+                raise ValidationError(f"{t.BY_ID[tag].name}: invalid timestamp") from error
     for tag, kind in vectors.items():
         vector = cast(Vector, require(root, tag, Vector))
-        if vector.physical_type != kind and not (kind == P.CHAR1 and vector.physical_type == P.CHAR2):
+        if vector.physical_type != kind and not (
+            kind == P.CHAR1 and vector.physical_type == P.CHAR2
+        ):
             raise ValidationError(f"{t.BY_ID[tag].name} has invalid physical type")
 
 
@@ -72,8 +80,11 @@ class RecordView:
 
     def set_text(self, tag: UUID, value: str) -> None:
         previous = self.body.get(tag)
-        unicode = (isinstance(previous, Vector) and previous.physical_type == P.CHAR2
-                   or not value.isascii())
+        unicode = (
+            isinstance(previous, Vector)
+            and previous.physical_type == P.CHAR2
+            or not value.isascii()
+        )
         replacement = Vector.from_text(tag, value, unicode=unicode)
         if previous is not None:
             replacement.reserved = previous.reserved
@@ -117,13 +128,19 @@ class ObservationRecordView(RecordView):
                 raise ValidationError("series instance count differs from definition count")
             for si, series in enumerate(instances):
                 nodes[ci, si] = series
+                for tag in (t.SERIES_SCALE, t.SERIES_OFFSET):
+                    field = series.get(tag)
+                    if field is not None and not isinstance(field, Scalar):
+                        raise ValidationError(f"{t.BY_ID[tag].name} must be scalar")
                 channel = series.get(t.SERIES_SHARE_CHANNEL_INDEX)
                 shared = series.get(t.SERIES_SHARE_SERIES_INDEX)
                 if (channel is None) != (shared is None):
                     raise ValidationError("incomplete series sharing reference")
                 if channel is not None:
-                    references[ci, si] = (integer(series, t.SERIES_SHARE_CHANNEL_INDEX),
-                                          integer(series, t.SERIES_SHARE_SERIES_INDEX))
+                    references[ci, si] = (
+                        integer(series, t.SERIES_SHARE_CHANNEL_INDEX),
+                        integer(series, t.SERIES_SHARE_SERIES_INDEX),
+                    )
                 else:
                     require(series, t.SERIES_VALUES, Vector)
         resolved: set[tuple[int, int]] = set()
@@ -169,42 +186,75 @@ class LogicalFile:
 
     def validate(self) -> None:
         compression_mode(self.container.physical)
-        _fields(self.container.body, {t.CREATION: P.TIMESTAMP},
-                {t.VERSION_INFO: P.UINT4, t.FILE_NAME: P.CHAR1})
+        _fields(
+            self.container.body,
+            {t.CREATION: P.TIMESTAMP},
+            {t.VERSION_INFO: P.UINT4, t.FILE_NAME: P.CHAR1},
+        )
         version = cast(Vector, require(self.container.body, t.VERSION_INFO, Vector))
         if version.count != 4:
             raise ValidationError("VersionInfo must contain four values")
         for source in self.sources:
-            _fields(source.body, {t.DATA_SOURCE_TYPE: P.GUID, t.EFFECTIVE: P.TIMESTAMP},
-                    {t.DATA_SOURCE_NAME: P.CHAR1})
+            _fields(
+                source.body,
+                {t.DATA_SOURCE_TYPE: P.GUID, t.EFFECTIVE: P.TIMESTAMP},
+                {t.DATA_SOURCE_NAME: P.CHAR1},
+            )
             definitions = children(source.body, t.CHANNEL_DEFINITIONS, t.ONE_CHANNEL_DEFINITION)
             if not definitions:
                 raise ValidationError("data source requires channel definitions")
             for channel in definitions:
-                _fields(channel, {t.PHASE_ID: P.UINT4, t.QUANTITY_TYPE_ID: P.GUID,
-                                  t.QUANTITY_MEASURED_ID: P.UINT4}, {})
+                _fields(
+                    channel,
+                    {
+                        t.PHASE_ID: P.UINT4,
+                        t.QUANTITY_TYPE_ID: P.GUID,
+                        t.QUANTITY_MEASURED_ID: P.UINT4,
+                    },
+                    {},
+                )
                 series = children(channel, t.SERIES_DEFINITIONS, t.ONE_SERIES_DEFINITION)
                 if not series:
                     raise ValidationError("channel requires series definitions")
                 for definition in series:
-                    _fields(definition, {t.VALUE_TYPE_ID: P.GUID, t.QUANTITY_UNITS_ID: P.UINT4,
-                                        t.QUANTITY_CHARACTERISTIC_ID: P.GUID,
-                                        t.STORAGE_METHOD_ID: P.UINT4}, {})
+                    _fields(
+                        definition,
+                        {
+                            t.VALUE_TYPE_ID: P.GUID,
+                            t.QUANTITY_UNITS_ID: P.UINT4,
+                            t.QUANTITY_CHARACTERISTIC_ID: P.GUID,
+                            t.STORAGE_METHOD_ID: P.UINT4,
+                        },
+                        {},
+                    )
         active_source: RecordView | None = None
         for record in self.records:
             if record.type_tag == t.DATA_SOURCE:
                 active_source = RecordView(record)
             if record.type_tag == t.MONITOR_SETTINGS:
                 root = RecordView(record).body
-                _fields(root, {t.EFFECTIVE: P.TIMESTAMP, t.TIME_INSTALLED: P.TIMESTAMP,
-                               t.USE_CALIBRATION: P.BOOLEAN4, t.USE_TRANSDUCER: P.BOOLEAN4}, {})
+                _fields(
+                    root,
+                    {
+                        t.EFFECTIVE: P.TIMESTAMP,
+                        t.TIME_INSTALLED: P.TIMESTAMP,
+                        t.USE_CALIBRATION: P.BOOLEAN4,
+                        t.USE_TRANSDUCER: P.BOOLEAN4,
+                    },
+                    {},
+                )
                 settings = children(root, t.CHANNEL_SETTINGS_ARRAY, t.ONE_CHANNEL_SETTING)
                 assert active_source is not None
-                count = len(children(active_source.body, t.CHANNEL_DEFINITIONS, t.ONE_CHANNEL_DEFINITION))
+                count = len(
+                    children(active_source.body, t.CHANNEL_DEFINITIONS, t.ONE_CHANNEL_DEFINITION)
+                )
                 indexes = [integer(setting, t.CHANNEL_DEFINITION_INDEX) for setting in settings]
                 if any(index >= count for index in indexes) or len(set(indexes)) != len(indexes):
                     raise ValidationError("invalid/duplicate channel setting index")
         for observation in self.observations:
-            _fields(observation.body, {t.TIME_CREATE: P.TIMESTAMP, t.TIME_START: P.TIMESTAMP,
-                                       t.TRIGGER_METHOD: P.UINT4}, {t.OBSERVATION_NAME: P.CHAR1})
+            _fields(
+                observation.body,
+                {t.TIME_CREATE: P.TIMESTAMP, t.TIME_START: P.TIMESTAMP, t.TRIGGER_METHOD: P.UINT4},
+                {t.OBSERVATION_NAME: P.CHAR1},
+            )
             observation.validate_instances()

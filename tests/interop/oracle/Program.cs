@@ -147,9 +147,13 @@ static class Program
         foreach (ObservationRecord observation in observations) await validator.WriteAsync(observation);
         double[] values = observations.Count == 0 ? [] : observations[0].ChannelInstances[0]
             .SeriesInstances[0].OriginalValues.Select(Convert.ToDouble).ToArray();
+        double[][][][] seriesValues = observations.Select(observation => observation.ChannelInstances
+            .Select(channel => channel.SeriesInstances.Select(series => series.OriginalValues
+                .Select(Convert.ToDouble).ToArray()).ToArray()).ToArray()).ToArray();
         return new { records = records.Select(r => new { tag = r.Header.RecordTypeTag.ToString(),
                                                          body = Canonical(r.Body.Collection) }).ToArray(),
-                     values, missingTags = validator.MissingTags.Select(m => m.TagName).ToArray() };
+                     values, seriesValues,
+                     missingTags = validator.MissingTags.Select(m => m.TagName).ToArray() };
     }
 
     static async Task Rewrite(string source, string target)
